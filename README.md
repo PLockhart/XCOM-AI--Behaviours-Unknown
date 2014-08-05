@@ -7,4 +7,4 @@ It is written in C++ and made with OpenGL and Glut.
 
 Teams of any size will fight each other and try to work together according to their characteristics.
 
-A working demonstration of this project can be found on <a href="https://www.youtube.com/channel/UClhVVyGdYrnf33kWZZhJ6XQ"> my YouTube channel.</a
+A working demonstration of this project can be found on <a href="https://www.youtube.com/channel/UClhVVyGdYrnf33kWZZhJ6XQ"> my YouTube channel.</a>

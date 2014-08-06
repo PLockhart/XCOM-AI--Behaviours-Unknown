@@ -1,0 +1,409 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\Utilities">
+      <UniqueIdentifier>{c96bc24b-97b5-424a-b739-10a1b690e1ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Level">
+      <UniqueIdentifier>{0f0ff3c7-805e-457a-afd4-2a1a3cc121d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utilities">
+      <UniqueIdentifier>{b3f0aa44-fe7f-411d-8d94-8ca7ca3d0a36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Level">
+      <UniqueIdentifier>{565ed274-5bd7-49ad-a009-625469c76f01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics">
+      <UniqueIdentifier>{a9b2c4fc-d64a-4805-9749-65f45a1fb1cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\AI">
+      <UniqueIdentifier>{d2de0ba1-8af7-4be6-9db3-d888c45fcdf2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\AI">
+      <UniqueIdentifier>{5f73fc3a-5f55-4d2a-a8f1-4c1e9dde8002}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Misc">
+      <UniqueIdentifier>{d796dd16-f04a-4088-913e-0ecac812eb94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Misc">
+      <UniqueIdentifier>{a8af435b-a074-44c6-b4a5-f1d1ea45bc9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Characters and Weapons">
+      <UniqueIdentifier>{c9e57f17-a13c-46af-8197-67140aa88f9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Characters and Weapons">
+      <UniqueIdentifier>{959bcff0-db4e-49e3-a3f9-1181a6bcbddb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Containers">
+      <UniqueIdentifier>{93bfbfc3-88ed-40a2-8876-36f5f2ee0d27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Containers">
+      <UniqueIdentifier>{b37537fb-f051-4d55-bda5-bea253154967}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\AI\Actions">
+      <UniqueIdentifier>{f3514ea2-cb15-49ff-964a-3ad09b999001}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\AI\Actions">
+      <UniqueIdentifier>{dbb68abc-9735-4b6d-9789-fc24e5d56d7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\AI\Decisions">
+      <UniqueIdentifier>{a579ac7c-05f8-4be6-84ad-1dfe7bb8a772}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\AI\Decisions">
+      <UniqueIdentifier>{b320af72-afe5-4791-b17c-57f8c8c41afc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\AI\Decisions\DecidedActions">
+      <UniqueIdentifier>{57cf74fd-c528-427f-a731-11c6950c2f60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\AI\Decisions\DecidedActions">
+      <UniqueIdentifier>{ddde2837-5e3b-4ef4-8007-6ea5bc208742}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Graphics\floorTile.tga">
+      <Filter>Graphics</Filter>
+    </None>
+    <None Include="Graphics\lowCover.tga">
+      <Filter>Graphics</Filter>
+    </None>
+    <None Include="Graphics\HighCover.tga">
+      <Filter>Graphics</Filter>
+    </None>
+    <None Include="LobSided1.txt">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="ThreeWay.txt" />
+    <None Include="Playground.txt" />
+    <None Include="DifferentTeamStats.txt" />
+    <None Include="CooperativeAssault.txt" />
+    <None Include="BothSidesDumb.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\Action.h">
+      <Filter>Header Files\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\AICharacter.h">
+      <Filter>Header Files\Characters and Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities\Camera.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities\Texture.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities\TGALoader.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Level\Level.h">
+      <Filter>Header Files\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="Level\Tile.h">
+      <Filter>Header Files\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="Misc\Sprite2D.h">
+      <Filter>Header Files\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="Misc\aimath.h">
+      <Filter>Header Files\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\PathFinding.h">
+      <Filter>Header Files\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\Raycast.h">
+      <Filter>Header Files\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="Characters and Weapons\Character.h">
+      <Filter>Header Files\Characters and Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="Characters and Weapons\BaseWeapon.h">
+      <Filter>Header Files\Characters and Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="Characters and Weapons\Shotgun.h">
+      <Filter>Header Files\Characters and Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="Characters and Weapons\Rifle.h">
+      <Filter>Header Files\Characters and Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities\CharacterDebugger.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Containers\DataContainers.h">
+      <Filter>Header Files\Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\Team.h">
+      <Filter>Header Files\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\Actions\Attackaction.h">
+      <Filter>Header Files\AI\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\Actions\MoveAction.h">
+      <Filter>Header Files\AI\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\Actions\Patrol.h">
+      <Filter>Header Files\AI\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\Actions\SuppressAction.h">
+      <Filter>Header Files\AI\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\Actions\TacticalMove.h">
+      <Filter>Header Files\AI\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\Decision.h">
+      <Filter>Header Files\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\DecisionTree.h">
+      <Filter>Header Files\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\Decisions\EnemyPresense.h">
+      <Filter>Header Files\AI\Decisions</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\ActionSequence.h">
+      <Filter>Header Files\AI\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\Decisions\AmmoCheck.h">
+      <Filter>Header Files\AI\Decisions</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\Actions\Reload.h">
+      <Filter>Header Files\AI\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\Decisions\DecidedActions\EngageEnemies.h">
+      <Filter>Header Files\AI\Decisions\DecidedActions</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\Decisions\DecidedActions\SinglePatrol.h">
+      <Filter>Header Files\AI\Decisions\DecidedActions</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\Decisions\DecidedActions\MoveToEngage.h">
+      <Filter>Header Files\AI\Decisions\DecidedActions</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\Decisions\DecidedActions\ReloadWeapon.h">
+      <Filter>Header Files\AI\Decisions\DecidedActions</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\Actions.h">
+      <Filter>Header Files\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\Decisions.h">
+      <Filter>Header Files\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\Decisions\EnemiesInRange.h">
+      <Filter>Header Files\AI\Decisions</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\Actions\Overwatch.h">
+      <Filter>Header Files\AI\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\Actions\CoveringFire.h">
+      <Filter>Header Files\AI\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\Decisions\DisregardsSafety.h">
+      <Filter>Header Files\AI\Decisions</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\Decisions\FeelsInDanger.h">
+      <Filter>Header Files\AI\Decisions</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\Decisions\IsUnderLowThreat.h">
+      <Filter>Header Files\AI\Decisions</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\Decisions\NearbyCombatCover.h">
+      <Filter>Header Files\AI\Decisions</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\Decisions\DecidedActions\FallBack.h">
+      <Filter>Header Files\AI\Decisions\DecidedActions</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\Decisions\DecidedActions\MoveToSafePlace.h">
+      <Filter>Header Files\AI\Decisions\DecidedActions</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\Decisions\DecidedActions\FindNearCombatCover.h">
+      <Filter>Header Files\AI\Decisions\DecidedActions</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\Decisions\DecidedActions\BeginPatrolling.h">
+      <Filter>Header Files\AI\Decisions\DecidedActions</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\Actions\BoundingOverwatch.h">
+      <Filter>Header Files\AI\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\Actions\WaitAction.h">
+      <Filter>Header Files\AI\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\Decisions\DecidedActions\SuppressEnemies.h">
+      <Filter>Header Files\AI\Decisions\DecidedActions</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\Decisions\HasCooperativeTeammates.h">
+      <Filter>Header Files\AI\Decisions</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\Decisions\ShouldMoveInForKill.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\Decisions\IsInCover.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="XCOM Ai Behaviours Unknown.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\Action.cpp">
+      <Filter>Source Files\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\AICharacter.cpp">
+      <Filter>Source Files\Characters and Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="Utilities\Camera.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="Utilities\Texture.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="Utilities\TGALoader.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="Level\Level.cpp">
+      <Filter>Source Files\Level</Filter>
+    </ClCompile>
+    <ClCompile Include="Level\Tile.cpp">
+      <Filter>Source Files\Level</Filter>
+    </ClCompile>
+    <ClCompile Include="Misc\Sprite2D.cpp">
+      <Filter>Source Files\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="Misc\aimath.cpp">
+      <Filter>Source Files\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\PathFinding.cpp">
+      <Filter>Source Files\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\Raycast.cpp">
+      <Filter>Source Files\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="Characters and Weapons\Character.cpp">
+      <Filter>Source Files\Characters and Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="Characters and Weapons\BaseWeapon.cpp">
+      <Filter>Source Files\Characters and Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="Characters and Weapons\Shotgun.cpp">
+      <Filter>Source Files\Characters and Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="Characters and Weapons\Rifle.cpp">
+      <Filter>Source Files\Characters and Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="Utilities\CharacterDebugger.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="Containers\DataContainers.cpp">
+      <Filter>Source Files\Containers</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\Team.cpp">
+      <Filter>Source Files\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\Actions\AttackAction.cpp">
+      <Filter>Source Files\AI\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\Actions\MoveAction.cpp">
+      <Filter>Source Files\AI\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\Actions\Patrol.cpp">
+      <Filter>Source Files\AI\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\Actions\SuppressAction.cpp">
+      <Filter>Source Files\AI\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\Actions\TacticalMove.cpp">
+      <Filter>Source Files\AI\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\Decision.cpp">
+      <Filter>Source Files\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\DecisionTree.cpp">
+      <Filter>Source Files\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\ActionSequence.cpp">
+      <Filter>Source Files\AI\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\Decisions\EnemyPresense.cpp">
+      <Filter>Source Files\AI\Decisions</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\Decisions\AmmoCheck.cpp">
+      <Filter>Source Files\AI\Decisions</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\Actions\Reload.cpp">
+      <Filter>Source Files\AI\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\Decisions\DecidedActions\EngageEnemies.cpp">
+      <Filter>Source Files\AI\Decisions\DecidedActions</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\Decisions\DecidedActions\ReloadWeapon.cpp">
+      <Filter>Source Files\AI\Decisions\DecidedActions</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\Decisions\DecidedActions\MoveToEngage.cpp">
+      <Filter>Source Files\AI\Decisions\DecidedActions</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\Decisions\DecidedActions\SinglePatrol.cpp">
+      <Filter>Source Files\AI\Decisions\DecidedActions</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\Decisions\EnemiesInRange.cpp">
+      <Filter>Source Files\AI\Decisions</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\Actions\CoveringFire.cpp">
+      <Filter>Source Files\AI\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\Actions\Overwatch.cpp">
+      <Filter>Source Files\AI\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\Decisions\NearbyCombatCover.cpp">
+      <Filter>Source Files\AI\Decisions</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\Decisions\IsUnderLowThreat.cpp">
+      <Filter>Source Files\AI\Decisions</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\Decisions\FeelsInDanger.cpp">
+      <Filter>Source Files\AI\Decisions</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\Decisions\DisregardsSafety.cpp">
+      <Filter>Source Files\AI\Decisions</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\Decisions\DecidedActions\FallBack.cpp">
+      <Filter>Source Files\AI\Decisions\DecidedActions</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\Decisions\DecidedActions\MoveToSafePlace.cpp">
+      <Filter>Source Files\AI\Decisions\DecidedActions</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\Decisions\DecidedActions\FindNearCombatCover.cpp">
+      <Filter>Source Files\AI\Decisions\DecidedActions</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\Decisions\DecidedActions\BeginPatrolling.cpp">
+      <Filter>Source Files\AI\Decisions\DecidedActions</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\Actions\BoundingOverwatch.cpp">
+      <Filter>Source Files\AI\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\Decisions\HasCooperativeTeammates.cpp">
+      <Filter>Source Files\AI\Decisions</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\Decisions\DecidedActions\SuppressEnemies.cpp">
+      <Filter>Source Files\AI\Decisions\DecidedActions</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\Actions\WaitAction.cpp">
+      <Filter>Source Files\AI\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\Decisions\ShouldMoveInForKill.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\Decisions\IsInCover.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

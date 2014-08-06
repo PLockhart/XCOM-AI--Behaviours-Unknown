@@ -1,0 +1,200 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{3FDBF23E-AC11-49A6-8BB2-FC08F21BBDA6}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>XCOMAiBehavioursUnknown</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <EnablePREfast>true</EnablePREfast>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="BothSidesDumb.txt" />
+    <None Include="CooperativeAssault.txt" />
+    <None Include="DifferentTeamStats.txt" />
+    <None Include="Graphics\floorTile.tga" />
+    <None Include="Graphics\HighCover.tga" />
+    <None Include="LobSided1.txt" />
+    <None Include="Graphics\lowCover.tga" />
+    <None Include="Playground.txt" />
+    <None Include="ThreeWay.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AI\Action.h" />
+    <ClInclude Include="AI\Actions.h" />
+    <ClInclude Include="AI\ActionSequence.h" />
+    <ClInclude Include="AI\Actions\Attackaction.h" />
+    <ClInclude Include="AI\Actions\BoundingOverwatch.h" />
+    <ClInclude Include="AI\Actions\CoveringFire.h" />
+    <ClInclude Include="AI\Actions\MoveAction.h" />
+    <ClInclude Include="AI\Actions\Overwatch.h" />
+    <ClInclude Include="AI\Actions\Patrol.h" />
+    <ClInclude Include="AI\Actions\Reload.h" />
+    <ClInclude Include="AI\Actions\SuppressAction.h" />
+    <ClInclude Include="AI\Actions\TacticalMove.h" />
+    <ClInclude Include="AI\Actions\WaitAction.h" />
+    <ClInclude Include="AI\AICharacter.h" />
+    <ClInclude Include="AI\Decision.h" />
+    <ClInclude Include="AI\Decisions.h" />
+    <ClInclude Include="AI\Decisions\AmmoCheck.h" />
+    <ClInclude Include="AI\Decisions\DecidedActions\BeginPatrolling.h" />
+    <ClInclude Include="AI\Decisions\DecidedActions\EngageEnemies.h" />
+    <ClInclude Include="AI\Decisions\DecidedActions\FallBack.h" />
+    <ClInclude Include="AI\Decisions\DecidedActions\FindNearCombatCover.h" />
+    <ClInclude Include="AI\Decisions\DecidedActions\MoveToEngage.h" />
+    <ClInclude Include="AI\Decisions\DecidedActions\MoveToSafePlace.h" />
+    <ClInclude Include="AI\Decisions\DecidedActions\ReloadWeapon.h" />
+    <ClInclude Include="AI\Decisions\DecidedActions\SinglePatrol.h" />
+    <ClInclude Include="AI\Decisions\DecidedActions\SuppressEnemies.h" />
+    <ClInclude Include="AI\Decisions\DisregardsSafety.h" />
+    <ClInclude Include="AI\Decisions\EnemiesInRange.h" />
+    <ClInclude Include="AI\Decisions\FeelsInDanger.h" />
+    <ClInclude Include="AI\Decisions\HasCooperativeTeammates.h" />
+    <ClInclude Include="AI\Decisions\IsInCover.h" />
+    <ClInclude Include="AI\Decisions\IsUnderLowThreat.h" />
+    <ClInclude Include="AI\Decisions\NearbyCombatCover.h" />
+    <ClInclude Include="AI\Decisions\ShouldMoveInForKill.h" />
+    <ClInclude Include="AI\DecisionTree.h" />
+    <ClInclude Include="AI\Team.h" />
+    <ClInclude Include="Characters and Weapons\BaseWeapon.h" />
+    <ClInclude Include="Characters and Weapons\Rifle.h" />
+    <ClInclude Include="Containers\DataContainers.h" />
+    <ClInclude Include="AI\Decisions\EnemyPresense.h" />
+    <ClInclude Include="Misc\aimath.h" />
+    <ClInclude Include="Characters and Weapons\Character.h" />
+    <ClInclude Include="Level\Level.h" />
+    <ClInclude Include="Misc\Sprite2D.h" />
+    <ClInclude Include="AI\PathFinding.h" />
+    <ClInclude Include="AI\Raycast.h" />
+    <ClInclude Include="Characters and Weapons\Shotgun.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="Utilities\CharacterDebugger.h" />
+    <ClInclude Include="Utilities\Texture.h" />
+    <ClInclude Include="Utilities\TGALoader.h" />
+    <ClInclude Include="Level\Tile.h" />
+    <ClInclude Include="Utilities\Camera.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="AI\Action.cpp" />
+    <ClCompile Include="AI\ActionSequence.cpp" />
+    <ClCompile Include="AI\Actions\AttackAction.cpp" />
+    <ClCompile Include="AI\Actions\BoundingOverwatch.cpp" />
+    <ClCompile Include="AI\Actions\CoveringFire.cpp" />
+    <ClCompile Include="AI\Actions\MoveAction.cpp" />
+    <ClCompile Include="AI\Actions\Overwatch.cpp" />
+    <ClCompile Include="AI\Actions\Patrol.cpp" />
+    <ClCompile Include="AI\Actions\Reload.cpp" />
+    <ClCompile Include="AI\Actions\SuppressAction.cpp" />
+    <ClCompile Include="AI\Actions\TacticalMove.cpp" />
+    <ClCompile Include="AI\Actions\WaitAction.cpp" />
+    <ClCompile Include="AI\AICharacter.cpp" />
+    <ClCompile Include="AI\Decision.cpp" />
+    <ClCompile Include="AI\Decisions\AmmoCheck.cpp" />
+    <ClCompile Include="AI\Decisions\DecidedActions\BeginPatrolling.cpp" />
+    <ClCompile Include="AI\Decisions\DecidedActions\EngageEnemies.cpp" />
+    <ClCompile Include="AI\Decisions\DecidedActions\FallBack.cpp" />
+    <ClCompile Include="AI\Decisions\DecidedActions\FindNearCombatCover.cpp" />
+    <ClCompile Include="AI\Decisions\DecidedActions\MoveToEngage.cpp" />
+    <ClCompile Include="AI\Decisions\DecidedActions\MoveToSafePlace.cpp" />
+    <ClCompile Include="AI\Decisions\DecidedActions\ReloadWeapon.cpp" />
+    <ClCompile Include="AI\Decisions\DecidedActions\SinglePatrol.cpp" />
+    <ClCompile Include="AI\Decisions\DecidedActions\SuppressEnemies.cpp" />
+    <ClCompile Include="AI\Decisions\DisregardsSafety.cpp" />
+    <ClCompile Include="AI\Decisions\EnemiesInRange.cpp" />
+    <ClCompile Include="AI\Decisions\FeelsInDanger.cpp" />
+    <ClCompile Include="AI\Decisions\HasCooperativeTeammates.cpp" />
+    <ClCompile Include="AI\Decisions\IsInCover.cpp" />
+    <ClCompile Include="AI\Decisions\IsUnderLowThreat.cpp" />
+    <ClCompile Include="AI\Decisions\NearbyCombatCover.cpp" />
+    <ClCompile Include="AI\Decisions\ShouldMoveInForKill.cpp" />
+    <ClCompile Include="AI\DecisionTree.cpp" />
+    <ClCompile Include="AI\Team.cpp" />
+    <ClCompile Include="Characters and Weapons\BaseWeapon.cpp" />
+    <ClCompile Include="Characters and Weapons\Rifle.cpp" />
+    <ClCompile Include="Characters and Weapons\Shotgun.cpp" />
+    <ClCompile Include="Containers\DataContainers.cpp" />
+    <ClCompile Include="AI\Decisions\EnemyPresense.cpp" />
+    <ClCompile Include="Misc\aimath.cpp" />
+    <ClCompile Include="Characters and Weapons\Character.cpp" />
+    <ClCompile Include="Level\Level.cpp" />
+    <ClCompile Include="Misc\Sprite2D.cpp" />
+    <ClCompile Include="AI\PathFinding.cpp" />
+    <ClCompile Include="AI\Raycast.cpp" />
+    <ClCompile Include="Utilities\CharacterDebugger.cpp" />
+    <ClCompile Include="Utilities\Texture.cpp" />
+    <ClCompile Include="Utilities\TGALoader.cpp" />
+    <ClCompile Include="Level\Tile.cpp" />
+    <ClCompile Include="Utilities\Camera.cpp" />
+    <ClCompile Include="XCOM Ai Behaviours Unknown.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

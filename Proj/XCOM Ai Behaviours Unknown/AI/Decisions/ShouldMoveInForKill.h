@@ -17,7 +17,7 @@ private:
 	//===================================================
 public:
 	ShouldMoveInForKill::ShouldMoveInForKill(DecisionTree * tree, float maxRange, float minAggression);
-	Action* Run();
+	Action* run();
 };
 
 #endif

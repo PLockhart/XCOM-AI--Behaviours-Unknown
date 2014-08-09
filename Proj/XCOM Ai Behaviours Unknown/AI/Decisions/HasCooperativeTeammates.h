@@ -16,7 +16,7 @@ public:
 	//===================================================
 public:
 	HasCooperativeTeammates::HasCooperativeTeammates(DecisionTree * tree, float minComradery);
-	Action* Run();
+	Action* run();
 };
 
 #endif

@@ -14,9 +14,9 @@ BeginPatrolling::BeginPatrolling(DecisionTree * tree, int minComraderyForBound)
 }
 
 //Character should either find team mates to begin bounding overwatch to, or just normally patrol themselves
-Action* BeginPatrolling::Run() {
+Action* BeginPatrolling::run() {
 
-	vector<AICharacter*> willingTeammates = Tree->CharTeam->GetTeammatesOf(Tree->Character);
+	vector<AICharacter*> willingTeammates = Tree->CharTeam->getTeammatesOf(Tree->Character);
 
 	//remove any team mates that aren't willing to bounding overwatch
 	for (int i = 0; i < (int)willingTeammates.size(); i++) {
@@ -39,7 +39,7 @@ Action* BeginPatrolling::Run() {
 			// or are already bounding with someone
 			if (willingTeammates[i]->HasAction == true) {
 
-				if (BoundingOverwatch * casted = dynamic_cast<BoundingOverwatch*>(willingTeammates[i]->CurrentAct->FrontAction())) {
+				if (BoundingOverwatch * casted = dynamic_cast<BoundingOverwatch*>(willingTeammates[i]->CurrentAct->frontAction())) {
 
 					if (casted->ActingCharacter != Tree->Character && casted->CoveringCharacter != Tree->Character) {
 
@@ -54,7 +54,7 @@ Action* BeginPatrolling::Run() {
 		//if all teammates are already bounding, then do a normal patrol
 		if (willingTeammates.size() == 0) {
 
-			//Tree->Log("No willing teammates to patrol with");
+			//Tree->log("No willing teammates to patrol with");
 			return new Patrol(Tree->Character, 1);
 		}
 		
@@ -64,38 +64,38 @@ Action* BeginPatrolling::Run() {
 			//only link up with teammates that are waiting and only if we are waiting
 			if (willingTeammates[i]->HasAction == true && Tree->Character->HasAction == true) {
 
-				if (dynamic_cast<WaitAction*>(willingTeammates[i]->CurrentAct->FrontAction())
-					&& willingTeammates[i]->CurrentAct->FrontAction()->IsActionComplete() == false
-					&& dynamic_cast<WaitAction*>(Tree->Character->CurrentAct->FrontAction())) {
+				if (dynamic_cast<WaitAction*>(willingTeammates[i]->CurrentAct->frontAction())
+					&& willingTeammates[i]->CurrentAct->frontAction()->isActionComplete() == false
+					&& dynamic_cast<WaitAction*>(Tree->Character->CurrentAct->frontAction())) {
 
 					//cancel the waiting character's action
-					willingTeammates[i]->CurrentAct->HardCancel();
+					willingTeammates[i]->CurrentAct->hardCancel();
 					delete willingTeammates[i]->CurrentAct;
 					willingTeammates[i]->HasAction = false;
 
-					return CreateBoundWithTeammate(willingTeammates[i]);
+					return createBoundWithTeammate(willingTeammates[i]);
 				}
 			}
 		}
 
 		//if we have made it this far, no willing team mates can do it right now, so just wait
-		Tree->Log("Bounding overwatch");
+		Tree->log("Bounding overwatch");
 		return new WaitAction(Tree->Character, 1);
 	}
 
-	//Tree->Log("No willing teammates to patrol with");
+	//Tree->log("No willing teammates to patrol with");
 	return new Patrol(Tree->Character, 1);
 }
 
 //Creates a bounding overwatch with the provided character, setting its action to the shared overwatch action
-Action* BeginPatrolling::CreateBoundWithTeammate(AICharacter * teammate) {
+Action* BeginPatrolling::createBoundWithTeammate(AICharacter * teammate) {
 
 	//bounding overwatch with them
 	BoundingOverwatch * newOverwatch = new BoundingOverwatch(teammate, Tree->Character, 2);
 
-	teammate->SetAction(newOverwatch);
+	teammate->setAction(newOverwatch);
 
-	Tree->Log("Bounding overwatch with teammate");
+	Tree->log("Bounding overwatch with teammate");
 	return newOverwatch;
 }
 	

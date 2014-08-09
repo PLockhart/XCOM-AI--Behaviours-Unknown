@@ -16,7 +16,7 @@ public:
 	//===================================================
 public:
 	HasMinAmmo::HasMinAmmo(DecisionTree * tree, float minPercent);
-	Action* Run();
+	Action* run();
 };
 
 #endif

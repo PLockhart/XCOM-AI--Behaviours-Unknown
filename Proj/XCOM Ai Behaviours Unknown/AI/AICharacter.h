@@ -64,48 +64,48 @@ protected:
 	//===================================================
 public:
 	AICharacter::AICharacter();
-	void RegisterTeam(Team * theTeam);
+	void registerTeam(Team * theTeam);
 
 	//updates
-	void UpdateActions(float dt);
-	virtual void MovedToTile(Tile * newTile);
-	virtual void Update(float dt);
-	void RegisterAttack(AttackData data);
-	void UnRegisterAttacker(AICharacter * attacker);
+	void updateActions(float dt);
+	virtual void movedToTile(Tile * newTile);
+	virtual void update(float dt);
+	void registerAttack(AttackData data);
+	void unRegisterAttacker(AICharacter * attacker);
 
 	//actions
-	virtual void SetAction(Action * action);
+	virtual void setAction(Action * action);
 
 	//checks
-	bool IsInCoverFromAttack(Vector3 attackOrigin);
+	bool isInCoverFromAttack(Vector3 attackOrigin);
 
 	//gets and setters for data on surroundings
-	vector<AttackData> GetAttackers();
-	vector<TileHistory> GetTileHistory();
+	vector<AttackData> getAttackers();
+	vector<TileHistory> getTileHistory();
 
 	//getters and setters for AI variables
-	void SetBaseAggression(int agg);
-	int GetBaseAggression();
-	void SetBaseBoldness(int bold);
-	int GetBaseBoldness();
-	void SetBaseComradery(int comradery);
-	int GetBaseComradery();
+	void setBaseAggression(int agg);
+	int getBaseAggression();
+	void setBaseBoldness(int bold);
+	int getBaseBoldness();
+	void setBaseComradery(int comradery);
+	int getBaseComradery();
 
 	//virtual methods that the subclassing component must implment
-	virtual void MoveBy(Vector3 move) = 0;
-	virtual void RotateBy(float amount) = 0;
-	virtual void FaceTowards(Vector3 point) = 0;
-	virtual void DamageTaken(AICharacter * source) = 0;
+	virtual void moveBy(Vector3 move) = 0;
+	virtual void rotateBy(float amount) = 0;
+	virtual void faceTowards(Vector3 point) = 0;
+	virtual void damageTaken(AICharacter * source) = 0;
 	
 	virtual AICharacter::~AICharacter();
 
 protected:
-	virtual void UpdateChildTraits() = 0;
-	void RegisterWeapon(BaseWeapon * weapon);
-	void UpdateTilePosition();
-	void UpdateTileHistory(float dt);
-	void UpdateInfulence();
-	void KeepTraitToBounds(int &trait, int lowerBound, int upperBound);
+	virtual void updateChildTraits() = 0;
+	void registerWeapon(BaseWeapon * weapon);
+	void updateTilePosition();
+	void updateTileHistory(float dt);
+	void updateInfulence();
+	void keepTraitToBounds(int &trait, int lowerBound, int upperBound);
 };
 
 #endif

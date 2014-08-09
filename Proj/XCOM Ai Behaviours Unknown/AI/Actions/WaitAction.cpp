@@ -5,32 +5,32 @@ WaitAction::WaitAction(AICharacter * actor, int priority)
 
 }
 
-void WaitAction::Setup() {
+void WaitAction::setup() {
 
 }
 
-void WaitAction::Act(float dt, AICharacter * sender) {
+void WaitAction::act(float dt, AICharacter * sender) {
 
 	//a wait action does nothing
 }
 
-bool WaitAction::CanInterrupt() {
+bool WaitAction::canInterrupt() {
 
 	return true;
 }
 
-void WaitAction::Cancel() {
+void WaitAction::cancel() {
 	
-	Action::Cancel();
-	Action::Finished();
+	Action::cancel();
+	Action::finished();
 }
 
-bool WaitAction::CanDoBoth(Action * other) {
+bool WaitAction::canDoBoth(Action * other) {
 
 	return false;
 }
 
-bool WaitAction::IsSameKind(Action * other) {
+bool WaitAction::isSameKind(Action * other) {
 
 	if (WaitAction * derived = dynamic_cast<WaitAction*>(other))
 		return true;
@@ -38,9 +38,9 @@ bool WaitAction::IsSameKind(Action * other) {
 	return false;
 }
 
-bool WaitAction::ShouldGiveWayTo(Action * other) {
+bool WaitAction::shouldGiveWayTo(Action * other) {
 
-	if (IsSameKind(other) == true) {
+	if (isSameKind(other) == true) {
 
 		return false;
 	}
@@ -52,7 +52,7 @@ bool WaitAction::ShouldGiveWayTo(Action * other) {
 	return false;
 }
 
-std::string WaitAction::ToString() {
+std::string WaitAction::toString() {
 
 	return "Waiting";
 }

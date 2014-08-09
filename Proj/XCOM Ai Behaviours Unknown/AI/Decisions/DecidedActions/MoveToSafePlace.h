@@ -8,7 +8,7 @@ class MoveToSafePlace : public DecisionAction {
 
 public:
 	MoveToSafePlace::MoveToSafePlace(DecisionTree * tree);
-	Action* Run();
+	Action* run();
 };
 
 #endif

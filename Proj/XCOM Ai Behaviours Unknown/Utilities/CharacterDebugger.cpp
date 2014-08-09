@@ -7,13 +7,13 @@
 #include <gl\glut.h>
 #include <gl\GL.h>
 
-void CharacterDebugger::AddCharacter(Character * newChar) {
+void CharacterDebugger::addCharacter(Character * newChar) {
 
 	_characters.push_back(newChar);
 }
 
 //Draws all of the character's information
-void CharacterDebugger::Draw() {
+void CharacterDebugger::draw() {
 
 	Vector3 drawPos = Vector3(1000, 50, 0);
 
@@ -31,12 +31,12 @@ void CharacterDebugger::Draw() {
 		if (loopedCharacter->IsDead == false) {
 
 			if (loopedCharacter->HasAction == true)
-				DrawString(loopedCharacter->ToString() + ": " + loopedCharacter ->CurrentAct->ToString());
+				drawString(loopedCharacter->toString() + ": " + loopedCharacter ->CurrentAct->toString());
 			else
-				DrawString(loopedCharacter->ToString() + ": Idle");
+				drawString(loopedCharacter->toString() + ": Idle");
 		}
 		else
-			DrawString(loopedCharacter->ToString() + ": KIA");
+			drawString(loopedCharacter->toString() + ": KIA");
 
 		drawPos.y += 20;
 		//draw their health bar
@@ -69,7 +69,7 @@ void CharacterDebugger::Draw() {
 		drawPos.y += 10;
 
 		//the ammo remaining
-		float ammoRation = loopedCharacter->Weapon->GetAmmoRatio();
+		float ammoRation = loopedCharacter->Weapon->getAmmoRatio();
 		int yellowLength = (ammoRation * length);
 
 		glColor4f(1, 1, 0, 1);
@@ -114,15 +114,15 @@ void CharacterDebugger::Draw() {
 
 		//draw some of the starts
 		glRasterPos2f(drawPos.x + portraitHeight + 10, drawPos.y);
-		DrawString(CombineStrAndNum("Aggression ", loopedCharacter->Aggression));
+		drawString(combineStrAndNum("Aggression ", loopedCharacter->Aggression));
 		drawPos.y += 25;
 
 		glRasterPos2f(drawPos.x + portraitHeight + 10, drawPos.y);
-		DrawString(CombineStrAndNum("Boldness ", loopedCharacter->Boldness));
+		drawString(combineStrAndNum("Boldness ", loopedCharacter->Boldness));
 		drawPos.y += 25;
 
 		glRasterPos2f(drawPos.x + portraitHeight + 10, drawPos.y);
-		DrawString(CombineStrAndNum("Comradery ", loopedCharacter->Comradery));
+		drawString(combineStrAndNum("Comradery ", loopedCharacter->Comradery));
 		drawPos.y += 25;
 
 		drawPos.y += 50;
@@ -132,13 +132,13 @@ void CharacterDebugger::Draw() {
 }
 
 //Draws a string on the screen
-void CharacterDebugger::DrawString(string input) {
+void CharacterDebugger::drawString(string input) {
 
 	for (int i = 0; i < (int)input.size(); i++)
 		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, input[i]);
 }
 
-string CharacterDebugger::CombineStrAndNum(string input, int num) {
+string CharacterDebugger::combineStrAndNum(string input, int num) {
 
 	std::stringstream output;
 	output << input;

@@ -10,11 +10,11 @@ EnemyPresense::EnemyPresense(DecisionTree * tree)
 
 }
 
-Action* EnemyPresense::Run() {
+Action* EnemyPresense::run() {
 
 	//if there are no recorded enemy positions that we know of then return false
 	if ((int)Tree->CharTeam->EnemyPositionHist.size() != 0)
-		return TrueBranch->Run();
+		return TrueBranch->run();
 
-	return FalseBranch->Run();
+	return FalseBranch->run();
 }

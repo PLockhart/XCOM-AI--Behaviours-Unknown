@@ -32,13 +32,13 @@ Tile::~Tile() {
 }
 
 //Gets the tiles that this line can see
-std::vector<Tile*> Tile::GetLosTiles() {
+std::vector<Tile*> Tile::getLosTiles() {
 
-	return ParentLevel->GetLOSForTile(this);
+	return ParentLevel->getLOSForTile(this);
 }
 
 //Checks to see if at a give angle of entry, the tile has that side protected by cover
-bool Tile::IsInCoverAtAngle(float angle) {
+bool Tile::isInCoverAtAngle(float angle) {
 
 	if (CoverNorth == false &&
 		CoverEast == false &&
@@ -46,7 +46,7 @@ bool Tile::IsInCoverAtAngle(float angle) {
 		CoverWest == false)
 		return false;
 
-	Rotations::ClampDegreeRotation(angle);
+	Rotations::clampDegreeRotation(angle);
 
 	if ((angle > 360 - CoverArc / 2 || angle < CoverArc / 2) && CoverNorth == true)
 		return true;
@@ -63,7 +63,7 @@ bool Tile::IsInCoverAtAngle(float angle) {
 	return false;
 }
 
-bool Tile::IsInCoverFrom(Vector3 attackOrigin) {
+bool Tile::isInCoverFrom(Vector3 attackOrigin) {
 
 	//work out the angle from this tile to the attack
 	Vector3 dir = attackOrigin - Position;
@@ -71,12 +71,11 @@ bool Tile::IsInCoverFrom(Vector3 attackOrigin) {
 	//resolve vector into an angle, where 0 is facing up n degrees
 	float attackAngle = ((atan2(dir.y, dir.x) * 180) / 3.1415926) + 90;
 
-	return IsInCoverAtAngle(attackAngle);
+	return isInCoverAtAngle(attackAngle);
 }
 
 //Loads the sprite to represent this tile and also sets the position of the tile according to the sprites dimensions
-void Tile::LoadContent(Sprite2D * sprite) {
-
+void Tile::loadContent(Sprite2D * sprite) {
 	
 	//work out the centered position of this tile relative to the other tiles
 	Position = Vector3((sprite->Width * X) + sprite->Width / 2, (sprite->Height * Y) + sprite->Height / 2, 0);
@@ -87,16 +86,16 @@ void Tile::LoadContent(Sprite2D * sprite) {
 	TileSprite->Position = Position;
 }
 
-void Tile::Draw() {
+void Tile::draw() {
 
-	TileSprite->Draw();
+	TileSprite->draw();
 }
 
 //Pathfinding methods
 /////////////////////////////////////////////////////////////////////////////////////
 
 //Assigns and calculates the costs for moving to this tile
-void Tile::AssignCosts(int g, int h) {
+void Tile::assignCosts(int g, int h) {
 
 	GCost = abs(g);
 	HCost = abs(h);
@@ -104,15 +103,15 @@ void Tile::AssignCosts(int g, int h) {
 	//FCost = GCost + HCost + Weighting;
 }
 
-void Tile::SetPathfindingParent(Tile * parent) {
+void Tile::setPathfindingParent(Tile * parent) {
 
 	PathfindingParent = parent;
 	HasPathfindingParent = true;
 }
 
-void Tile::ResetTile() {
+void Tile::resetTile() {
 
-	AssignCosts(0, 0);
+	assignCosts(0, 0);
 	Weighting = 0;
 	Exposure = 0;
 	HasPathfindingParent = false;

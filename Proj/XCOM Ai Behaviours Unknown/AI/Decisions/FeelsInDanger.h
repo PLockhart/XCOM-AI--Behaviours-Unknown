@@ -14,7 +14,7 @@ protected:
 	//===================================================
 public:
 	FeelsInDanger::FeelsInDanger(DecisionTree * tree, float damageConstant);
-	Action* Run();
+	Action* run();
 };
 
 #endif

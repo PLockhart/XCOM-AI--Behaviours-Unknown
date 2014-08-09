@@ -15,7 +15,7 @@ class EnemiesInRange : public Decision {
 	//===================================================
 public:
 	EnemiesInRange::EnemiesInRange(DecisionTree * tree, float aggressionModifier);
-	Action* Run();
+	Action* run();
 };
 
 #endif

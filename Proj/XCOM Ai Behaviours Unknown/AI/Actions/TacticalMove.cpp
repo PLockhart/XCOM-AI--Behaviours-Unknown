@@ -6,6 +6,11 @@
 #include "../PathFinding.h"
 #include "../Team.h"
 
+//Increasing this makes the AI less considerate of enemy threat. Decreasing this makes them worry about enemies more
+const int ENEMY_BOLDNESS_MODIFIER_CONST = 10;
+//The extra weighting given to a tile it if provides protection from gunfire
+const int COVER_PROTECTION_CONST = 100;
+
 //Moves tactically around cover avoiding enemy fire when possible
 TacticalMove::TacticalMove(AICharacter * character, Tile * destination, int priority)
 	:MoveAction(priority) {
@@ -15,20 +20,20 @@ TacticalMove::TacticalMove(AICharacter * character, Tile * destination, int prio
 }
 
 //Gets the infulence of all the known enemies to this characters team and plots a safe path
-bool TacticalMove::GetPathwayData(vector<Tile*> &pathway, Tile * start, Tile * destination) {
+bool TacticalMove::getPathwayData(vector<Tile*> &pathway, Tile * start, Tile * destination) {
 
-	vector<InfulenceData> infulencedTiles = ActingCharacter->ParentTeam->GetAssumedEnemyInfulencedTiles();
+	vector<InfulenceData> infulencedTiles = ActingCharacter->ParentTeam->getAssumedEnemyInfulencedTiles();
 
 	//decrease the enemy's infulence according to our characters boldness
 	float boldnessConst = 1;
 	for (int i = 0; i < (int)infulencedTiles.size(); i++)
-		infulencedTiles[i].Infulence *= (10 - (ActingCharacter->Boldness * boldnessConst)) / 10;	//divide by constant
+		infulencedTiles[i].Infulence *= (10 - (ActingCharacter->Boldness * boldnessConst)) / ENEMY_BOLDNESS_MODIFIER_CONST;	//divide by constant
 
-	return PathFinding::GetTacticalPathway(infulencedTiles, pathway, start, destination);
+	return PathFinding::getTacticalPathway(infulencedTiles, pathway, start, destination);
 }
 
 //searches for the best fallback position when immediate tiles cannot be moved to
-Tile* TacticalMove::GetIdealFallback() {
+Tile* TacticalMove::getIdealFallback() {
 
 	//find all the tiles we can readily move to
 	vector<Tile*> neighbours;
@@ -38,10 +43,10 @@ Tile* TacticalMove::GetIdealFallback() {
 
 		neighbours.clear();
 
-		PathFinding::FloodMap(neighbours, ActingCharacter->CurrentTile, depth);
+		PathFinding::floodMap(neighbours, ActingCharacter->CurrentTile, depth);
 
 		//get the enemy infulence over these tiles
-		vector<InfulenceData> enemyInfulence = ActingCharacter->ParentTeam->GetAssumedEnemyInfulencedTiles();
+		vector<InfulenceData> enemyInfulence = ActingCharacter->ParentTeam->getAssumedEnemyInfulencedTiles();
 
 		//modify the weighting by the enemies infulence over that tile
 		for (int i = 0; i < (int)enemyInfulence.size(); i++) {
@@ -67,11 +72,11 @@ Tile* TacticalMove::GetIdealFallback() {
 			Tile * loopedCandidate = neighbours[i];
 
 			//if in cover from enemies, increase the weighting
-			int protectionValue = 100;
+			int protectionValue = COVER_PROTECTION_CONST;
 
 			for (int j = 0; j < (int)ActingCharacter->VisibleEnemies.size(); j++) {
 
-				if (loopedCandidate->IsInCoverFrom(ActingCharacter->VisibleEnemies[j]->Position))
+				if (loopedCandidate->isInCoverFrom(ActingCharacter->VisibleEnemies[j]->Position))
 					loopedCandidate->FCost += protectionValue;
 			}
 		}
@@ -103,10 +108,10 @@ Tile* TacticalMove::GetIdealFallback() {
 	return best;
 }
 
-bool TacticalMove::ShouldGiveWayTo(Action * other) {
+bool TacticalMove::shouldGiveWayTo(Action * other) {
 
 	//if they are of the same type..
-	if (IsSameKind(other) == true) {
+	if (isSameKind(other) == true) {
 
 		TacticalMove * derived = dynamic_cast<TacticalMove*>(other);
 
@@ -126,7 +131,7 @@ bool TacticalMove::ShouldGiveWayTo(Action * other) {
 	return false;
 }
 
-bool TacticalMove::IsSameKind(Action * other) {
+bool TacticalMove::isSameKind(Action * other) {
 
 	if (TacticalMove * derived = dynamic_cast<TacticalMove*>(other))
 		return true;
@@ -134,7 +139,7 @@ bool TacticalMove::IsSameKind(Action * other) {
 	return false;
 }
 
-std::string TacticalMove::ToString() {
+std::string TacticalMove::toString() {
 
 	return "Moving Tactically";
 }

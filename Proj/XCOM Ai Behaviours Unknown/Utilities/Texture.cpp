@@ -7,7 +7,7 @@
 Texture::Texture() { }
 
 //Returns an opengl texture from the passed file, or -1 if not sucessful
-TGATexture Texture::LoadTexture(char * fileName) {
+TGATexture Texture::loadTexture(char * fileName) {
 	
 	//create a string from the file name
 	std::string temp;
@@ -15,11 +15,11 @@ TGATexture Texture::LoadTexture(char * fileName) {
 
 	//load a TGA file if in this format
 	//if (Texture::hasEnding(fileName, ".tga"))
-		return Texture::LoadTGAFile(fileName);
+		return Texture::loadTGAFile(fileName);
 }
 
 //Loads a TGA image and binds it to a texture
-TGATexture Texture::LoadTGAFile(char * fileName) {
+TGATexture Texture::loadTGAFile(char * fileName) {
 
 	glEnable(GL_TEXTURE_2D);
 

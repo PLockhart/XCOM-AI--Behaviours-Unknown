@@ -16,26 +16,26 @@ public:
 	//===================================================
 public:
 	AttackAction::AttackAction(AICharacter * actor, AICharacter * target, int priority);
-	void Act(float dt, AICharacter * sender);
+	void act(float dt, AICharacter * sender);
 	
-	bool CanInterrupt();
-	bool CanDoBoth(Action * other);
-	void Cancel();
-	void HardCancel();
+	bool canInterrupt();
+	bool canDoBoth(Action * other);
+	void cancel();
+	void hardCancel();
 
-	virtual bool IsSameKind(Action * other);
-	virtual bool ShouldGiveWayTo(Action *other);
+	virtual bool isSameKind(Action * other);
+	virtual bool shouldGiveWayTo(Action *other);
 
-	virtual std::string ToString();
+	virtual std::string toString();
 
 protected:
-	void Finished();	//Is triggered when the action has been completed
-	void Setup();
+	void finished();	//Is triggered when the action has been completed
+	void setup();
 
 private:
-	virtual void RegisterAttack();
-	virtual bool WeaponReady();
-	virtual void PerformAttack();
+	virtual void registerAttack();
+	virtual bool isWeaponReady();
+	virtual void performAttack();
 };
 
 #endif

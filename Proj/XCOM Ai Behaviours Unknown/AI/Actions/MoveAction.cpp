@@ -16,7 +16,7 @@ MoveAction::MoveAction(AICharacter * character, Tile * destination, int priority
 	_originalDestination = destination;
 }
 
-void MoveAction::Setup() {
+void MoveAction::setup() {
 
 	_isSetupFin = true;
 
@@ -25,7 +25,7 @@ void MoveAction::Setup() {
 
 	//try and work out a path to the destination
 	bool _pathCalculated;
-	_pathCalculated = GetPathwayData(_moveTiles, ActingCharacter->CurrentTile, _originalDestination);
+	_pathCalculated = getPathwayData(_moveTiles, ActingCharacter->CurrentTile, _originalDestination);
 
 	//if we coulld plot a path, set the characters destination to the first index
 	if (_pathCalculated == true) {
@@ -37,28 +37,28 @@ void MoveAction::Setup() {
 	//otherwise cancel the movement
 	else {
 
-		Cancel();
+		cancel();
 	}
 }
 
 //Gets the pathway data from a start to a finish point.
 //Returns the outcome of the procedure, true if a path was found
-bool MoveAction::GetPathwayData(vector<Tile*> &pathway, Tile * start, Tile * destination) {
+bool MoveAction::getPathwayData(vector<Tile*> &pathway, Tile * start, Tile * destination) {
 
 	//normal movement, so nothing special
-	return PathFinding::GetPathway(pathway, start, destination);
+	return PathFinding::getPathway(pathway, start, destination);
 }
 
 //Moves the player's vector along the move positions
-void MoveAction::Act(float dt, AICharacter * sender) {
+void MoveAction::act(float dt, AICharacter * sender) {
 
-	Action::Act(dt, sender);
+	Action::act(dt, sender);
 
 	//validation check
 	if (abs(ActingCharacter->DestinationTile->X - ActingCharacter->CurrentTile->X) > 1 ||
 		abs(ActingCharacter->DestinationTile->Y - ActingCharacter->CurrentTile->Y) > 1) {
 
-		Cancel();
+		cancel();
 		return;
 	}
 
@@ -68,7 +68,7 @@ void MoveAction::Act(float dt, AICharacter * sender) {
 		//if the overall destination is occupied by another character then cancel the action
 		if (_moveTiles.back()->IsOccupied == true) {
 
-			Cancel();
+			cancel();
 			return;
 		}
 
@@ -79,12 +79,12 @@ void MoveAction::Act(float dt, AICharacter * sender) {
 
 		//resolve vector into an angle, where 0 is facing up n degrees
 		float targetRot = ((atan2(moveVector.y, moveVector.x) * 180) / 3.1415926) + 90;
-		Rotations::ClampDegreeRotation(targetRot);
+		Rotations::clampDegreeRotation(targetRot);
 
 		//Only allow the movement along the direction vector if they are facing the general direction
-		if (Rotations::RotationsSimilair(ActingCharacter->Rotation, targetRot, ActingCharacter->RotSpeed) == false) {
+		if (Rotations::rotationsSimilair(ActingCharacter->Rotation, targetRot, ActingCharacter->RotSpeed) == false) {
 
-			ActingCharacter->RotateBy(Rotations::RotDir(ActingCharacter->Rotation, targetRot) * ActingCharacter->RotSpeed);
+			ActingCharacter->rotateBy(Rotations::RotDir(ActingCharacter->Rotation, targetRot) * ActingCharacter->RotSpeed);
 		}
 		//else the player is facing in the right direction and ready to move
 		else {
@@ -92,7 +92,7 @@ void MoveAction::Act(float dt, AICharacter * sender) {
 			moveVector.normalise();
 
 			//move the player along its move vector
-			ActingCharacter->MoveBy((moveVector * ActingCharacter->Speed * ActingCharacter->MoveModifier));
+			ActingCharacter->moveBy((moveVector * ActingCharacter->Speed * ActingCharacter->MoveModifier));
 
 			//check to see if the character has moved on to the destination tile
 			if (ActingCharacter->CurrentTile == _moveTiles.front()) {
@@ -113,7 +113,7 @@ void MoveAction::Act(float dt, AICharacter * sender) {
 		//if the destination has been taken then cancel the move
 		if (ActingCharacter->DestinationTile->IsOccupied == true) {
 
-			Cancel();
+			cancel();
 			return;
 		}
 
@@ -124,24 +124,24 @@ void MoveAction::Act(float dt, AICharacter * sender) {
 
 		//if the character is basically on top of the tile's center position, make it so
 		if (ActingCharacter->Position.distance(nextPoint) < ActingCharacter->Speed * ActingCharacter->MoveModifier)
-			ActingCharacter->MoveBy(ActingCharacter->CurrentTile->Position - ActingCharacter->Position);
+			ActingCharacter->moveBy(ActingCharacter->CurrentTile->Position - ActingCharacter->Position);
 
 		//move the character along its move vector
 		else
-			ActingCharacter->MoveBy(moveVector * ActingCharacter->Speed * ActingCharacter->MoveModifier);
+			ActingCharacter->moveBy(moveVector * ActingCharacter->Speed * ActingCharacter->MoveModifier);
 	}
 
 	//if the cahracter has no more tiles ot move though and they are in the center of their current tile, then finish the action
 	if (ActingCharacter->Position == ActingCharacter->CurrentTile->Position &&
 		_moveTiles.size() == 0) 
-		Finished();
+		finished();
 }
 
 //Cancels the movement and moves the character to the nearest valid tile
-void MoveAction::Cancel() {
+void MoveAction::cancel() {
 
 	//don't bother redoing the cancel if we are already cancelled or have already finished
-	if (State == kCancelling || Action::IsActionComplete() == true)
+	if (State == kCancelling || Action::isActionComplete() == true)
 		return;
 
 	State = kCancelling;
@@ -156,22 +156,22 @@ void MoveAction::Cancel() {
 	if (ActingCharacter->CurrentTile->IsOccupied == false) {
 
 		ActingCharacter->DestinationTile = ActingCharacter->CurrentTile;
-		Finished();
+		finished();
 	}
 
 	//if we can't immediately find a fallback, search out to the neighbouring tiles
 	else {
 
-		Tile *closest = GetIdealFallback();
+		Tile *closest = getIdealFallback();
 
 		//path find to the worked out nearest tile
-		GetPathwayData(_moveTiles, ActingCharacter->CurrentTile, closest);
+		getPathwayData(_moveTiles, ActingCharacter->CurrentTile, closest);
 		ActingCharacter->DestinationTile = _moveTiles[0];
 	}
 }
 
 //Gets the closest valid tile we can move to, to stop moving
-Tile* MoveAction::GetIdealFallback() {
+Tile* MoveAction::getIdealFallback() {
 
 	bool foundDestination = false;
 	int depth = 1;
@@ -181,7 +181,7 @@ Tile* MoveAction::GetIdealFallback() {
 
 		//flood map and find a random neighbour to go to
 		vector<Tile*> neighbours;
-		PathFinding::FloodMap(neighbours, ActingCharacter->CurrentTile, depth);
+		PathFinding::floodMap(neighbours, ActingCharacter->CurrentTile, depth);
 
 		for (int i = 0; i < (int)neighbours.size(); i++) {
 			//remove any neighbours that are occupied
@@ -216,25 +216,25 @@ Tile* MoveAction::GetIdealFallback() {
 }
 
 //cancels moving to the target
-bool MoveAction::CanInterrupt() {
+bool MoveAction::canInterrupt() {
 
 	return true;
 }
 
 //Cant do anything while moving
-bool MoveAction::CanDoBoth(Action * other) {
+bool MoveAction::canDoBoth(Action * other) {
 
 	return false;
 }
 
 //Set the tile to be occupied then call the super finished method
-void MoveAction::Finished() {
+void MoveAction::finished() {
 
 	ActingCharacter->CurrentTile->IsOccupied = true;
-	Action::Finished();
+	Action::finished();
 }
 
-bool MoveAction::IsSameKind(Action * other) {
+bool MoveAction::isSameKind(Action * other) {
 
 	if (MoveAction * derived = dynamic_cast<MoveAction*>(other))
 		return true;
@@ -242,10 +242,10 @@ bool MoveAction::IsSameKind(Action * other) {
 	return false;
 }
 
-bool MoveAction::ShouldGiveWayTo(Action * other) {
+bool MoveAction::shouldGiveWayTo(Action * other) {
 
 	//if they are of the same type..
-	if (IsSameKind(other) == true) {
+	if (isSameKind(other) == true) {
 
 		if (other->Priority >= Priority)
 			return true;
@@ -260,7 +260,7 @@ bool MoveAction::ShouldGiveWayTo(Action * other) {
 	return false;
 }
 
-std::string MoveAction::ToString() {
+std::string MoveAction::toString() {
 
 	return "Moving";
 }

@@ -14,7 +14,7 @@ protected:
 	//===================================================
 public:
 	NearbyCombatCover::NearbyCombatCover(DecisionTree * tree, int tileDepth);
-	Action* Run();
+	Action* run();
 };
 
 #endif

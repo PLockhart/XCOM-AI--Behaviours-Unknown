@@ -33,14 +33,14 @@ protected:
 public:
 	DecisionTree::DecisionTree(AICharacter * actor, Level * level);
 	DecisionTree::~DecisionTree();
-	Action* Run();	//Runs through the decision tree, returning the action the actor should take
-	void Log(string message);
+	Action* run();	//Runs through the decision tree, returning the action the actor should take
+	void log(string message);
 
-	void Draw();
+	void draw();
 
 protected:
-	void BuildTree();
-	void DrawString(string input);
+	void buildTree();
+	void drawString(string input);
 };
 
 #endif

@@ -14,8 +14,8 @@ class Raycast {
 	//Methods
 	//===================================================
 public:
-	static bool CastRay(Tile * source, Tile *destination);
-	static void VisibleTiles(vector<Tile*> &visibleTiles, Tile * source);
+	static bool castRay(Tile * source, Tile *destination);
+	static void visibleTiles(vector<Tile*> &visibleTiles, Tile * source);
 };
 
 #endif

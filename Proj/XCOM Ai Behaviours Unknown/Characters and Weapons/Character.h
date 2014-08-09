@@ -22,17 +22,17 @@ public:
 public:
 	Character::Character(char * fileName, Tile * startTile, BaseWeapon * weapon, Team * team);
 	Character::~Character();
-	void Update(float dt);
-	void Draw();
-	string ToString();
+	void update(float dt);
+	void draw();
+	string toString();
 
 	//overrides of ai behaviours and required functions
-	void Character::MoveBy(Vector3 move);
-	void RotateBy(float amount);
-	void FaceTowards(Vector3 point);
-	void DamageTaken(AICharacter * source);
+	void Character::moveBy(Vector3 move);
+	void rotateBy(float amount);
+	void faceTowards(Vector3 point);
+	void damageTaken(AICharacter * source);
 
 protected:
-	void UpdateChildTraits();
+	void updateChildTraits();
 };
 #endif

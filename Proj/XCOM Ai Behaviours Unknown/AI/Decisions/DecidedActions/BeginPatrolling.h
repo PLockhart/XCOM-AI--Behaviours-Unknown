@@ -11,10 +11,10 @@ private:
 
 public:
 	BeginPatrolling::BeginPatrolling(DecisionTree * tree, int minComraderyForBound);
-	Action* Run();
+	Action* run();
 
 private:
-	Action* CreateBoundWithTeammate(AICharacter * teammate);
+	Action* createBoundWithTeammate(AICharacter * teammate);
 };
 
 #endif

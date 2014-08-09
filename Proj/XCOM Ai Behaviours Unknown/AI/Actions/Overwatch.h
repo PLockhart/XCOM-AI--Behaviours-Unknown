@@ -16,22 +16,22 @@ protected:
 	//===================================================
 public:
 	Overwatch::Overwatch(AICharacter * actor, int priority);
-	void Act(float dt, AICharacter * sender);
+	void act(float dt, AICharacter * sender);
 	
-	bool CanInterrupt();
-	bool CanDoBoth(Action * other);
-	void Cancel();
+	bool canInterrupt();
+	bool canDoBoth(Action * other);
+	void cancel();
 
-	bool IsSameKind(Action * other);
-	bool ShouldGiveWayTo(Action *other);
+	bool isSameKind(Action * other);
+	bool shouldGiveWayTo(Action *other);
 
-	virtual std::string ToString();
+	virtual std::string toString();
 
 protected:
-	void Setup();
+	void setup();
 
-	virtual AICharacter* ChooseTarget();
-	virtual void EngageTarget(AICharacter * target);
+	virtual AICharacter* chooseTarget();
+	virtual void engageTarget(AICharacter * target);
 };
 
 #endif

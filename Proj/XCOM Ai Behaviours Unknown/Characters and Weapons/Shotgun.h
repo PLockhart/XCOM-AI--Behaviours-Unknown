@@ -7,10 +7,10 @@ class Shotgun : public BaseWeapon {
 
 public:
 	Shotgun::Shotgun();
-	std::string ToString();
+	std::string toString();
 
-	bool CanSuppress();
-	void ModifyPlayerStats(AICharacter * character);
+	bool canSuppress();
+	void modifyPlayerStats(AICharacter * character);
 };
 
 #endif

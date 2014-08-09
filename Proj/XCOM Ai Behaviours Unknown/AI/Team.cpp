@@ -7,16 +7,19 @@
 #include "../Containers/DataContainers.h"
 #include "../Characters and Weapons/Character.h"
 
+//Length of time that an enemy's previous position should be tracked for. Increasing this decreases performance but will make AI remember enemy's move patterns better
+const int HISTORY_RECORD_LENGTH_CONST = 10;
+
 //Creates a new team with an identifier
 Team::Team(int num) {
 
 	_infulenceCalculated = false;
 	Identifier = num;
-	HistoryRecordLength = 10;
+	HistoryRecordLength = HISTORY_RECORD_LENGTH_CONST;
 }
 
 //Gets all the team mates of the provided character
-vector<AICharacter*> Team::GetTeammatesOf(AICharacter * character) {
+vector<AICharacter*> Team::getTeammatesOf(AICharacter * character) {
 
 	vector<AICharacter*> teamMates;
 
@@ -30,7 +33,7 @@ vector<AICharacter*> Team::GetTeammatesOf(AICharacter * character) {
 }
 
 //registers all the teams in the list, ignoring itself if present in the vector
-void Team::RegisterTeams(vector<Team*> teams) {
+void Team::registerTeams(vector<Team*> teams) {
 
 	_otherTeams.clear();
 
@@ -42,7 +45,7 @@ void Team::RegisterTeams(vector<Team*> teams) {
 }
 
 //Adds a character to the team and sets that character's team to this instance
-void Team::AddTeamMember(AICharacter * member) {
+void Team::addTeamMember(AICharacter * member) {
 
 	//if not already added to the team, add it
 	if (std::find(_teamMembers.begin(), _teamMembers.end(), member) == _teamMembers.end()) {
@@ -53,21 +56,21 @@ void Team::AddTeamMember(AICharacter * member) {
 }
 
 //Updates this team and all of its characters
-void Team::Update(float dt) {
+void Team::update(float dt) {
 
 	_infulenceCalculated = false;
 	_enemyInfulenceCalculated = false;
 	_teamHistoryCalculated = false;
 	_teamLOSCalculated = false;
 
-	//Update the information relating to enemies to this team 
-	SetVisibleEnemies();
-	UpdateTrackedEnemies();
-	UpdateEnemyPositionHistory(dt);
+	//update the information relating to enemies to this team 
+	setVisibleEnemies();
+	updateTrackedEnemies();
+	updateEnemyPositionHistory(dt);
 }
 
 //Returns all the tiles that this team can see
-vector<Tile*> Team::GetTeamsVisibleTiles() {
+vector<Tile*> Team::getTeamsVisibleTiles() {
 
 	if (_teamLOSCalculated == true)
 		return _teamLOS;
@@ -78,7 +81,7 @@ vector<Tile*> Team::GetTeamsVisibleTiles() {
 	for (int i = 0; i < (int)_teamMembers.size(); i++) {
 
 		//getting thier line of sight
-		vector<Tile*> loopedLos = _teamMembers[i]->CurrentTile->GetLosTiles();
+		vector<Tile*> loopedLos = _teamMembers[i]->CurrentTile->getLosTiles();
 
 		//loop all the entries against the teams LOS and avoide duplicates, while adding new entries
 		for (int j = 0; j < (int)loopedLos.size(); j++) {
@@ -100,9 +103,9 @@ vector<Tile*> Team::GetTeamsVisibleTiles() {
 }
 
 //Updates all of the enemy position histories
-void Team::UpdateEnemyPositionHistory(float dt) {
+void Team::updateEnemyPositionHistory(float dt) {
 
-	vector<Tile*> teamLos = GetTeamsVisibleTiles();
+	vector<Tile*> teamLos = getTeamsVisibleTiles();
 
 	//loop through all the position histories and update them
 	for (int i = 0; i < (int)EnemyPositionHist.size(); i++) {
@@ -125,7 +128,7 @@ void Team::UpdateEnemyPositionHistory(float dt) {
 
 	//loop through all the visible enemies, refreshing their position history
 	//and removing any previous entries of them as they are now out of date
-	vector<AICharacter*> visEnems = GetVisibleEnemies();
+	vector<AICharacter*> visEnems = getVisibleEnemies();
 	for (int visEnmIndx = 0; visEnmIndx < (int)visEnems.size(); visEnmIndx++) {
 
 		AICharacter * loopedEnemy = visEnems[visEnmIndx];
@@ -202,13 +205,13 @@ void Team::UpdateEnemyPositionHistory(float dt) {
 }
 
 //Removes a team member from the team
-void Team::RemoveMember(AICharacter * member) {
+void Team::removeMember(AICharacter * member) {
 
 	_teamMembers.erase(std::remove(_teamMembers.begin(), _teamMembers.end(), member));
 }
 
 //returns all of the tiles infulenced by this team
-vector<InfulenceData> Team::GetInfulencedTiles() {
+vector<InfulenceData> Team::getInfulencedTiles() {
 
 	if (_infulenceCalculated == true)
 		return _infulencedTiles;
@@ -251,7 +254,7 @@ vector<InfulenceData> Team::GetInfulencedTiles() {
 }
 
 //returns all of the tiles that are infulenced by the other enemy teams, from the team mates we can see
-vector<InfulenceData> Team::GetAssumedEnemyInfulencedTiles() {
+vector<InfulenceData> Team::getAssumedEnemyInfulencedTiles() {
 
 	if (_enemyInfulenceCalculated == true)
 		return _enemyInfulencedTiles;
@@ -295,7 +298,7 @@ vector<InfulenceData> Team::GetAssumedEnemyInfulencedTiles() {
 }
 
 //Returns all the tile history that each memeber of this team has seen
-vector<TileHistory> Team::GetTeamTileHistory() {
+vector<TileHistory> Team::getTeamTileHistory() {
 
 	if (_teamHistoryCalculated == true)
 		return _teamHistory;
@@ -305,7 +308,7 @@ vector<TileHistory> Team::GetTeamTileHistory() {
 	//loop through all the team mates
 	for (int teamMem = 0; teamMem < (int)_teamMembers.size(); teamMem++) {
 
-		vector<TileHistory> memberVision = _teamMembers[teamMem]->GetTileHistory();
+		vector<TileHistory> memberVision = _teamMembers[teamMem]->getTileHistory();
 
 		//looping through all of the tiles from the team member
 		for (int membHist = 0; membHist < (int)memberVision.size(); membHist++) {
@@ -336,7 +339,7 @@ vector<TileHistory> Team::GetTeamTileHistory() {
 }
 
 //Finds all of the enemies that are visible and adds them to the visible enemies vector
-void Team::SetVisibleEnemies() {
+void Team::setVisibleEnemies() {
 
 	_prevVisibleEnemies = _visibleEnemies;
 	_visibleEnemies.clear();
@@ -359,7 +362,7 @@ void Team::SetVisibleEnemies() {
 				AICharacter * loopedEnemy = loopedTeam->_teamMembers[enemyIndex];
 
 				//to see if we can see them
-				if (Raycast::CastRay(teamMember->CurrentTile, loopedEnemy->CurrentTile) == true) {
+				if (Raycast::castRay(teamMember->CurrentTile, loopedEnemy->CurrentTile) == true) {
 
 					//add it to the looped characters vector of visible enemies
 					teamMember->VisibleEnemies.push_back(loopedEnemy);
@@ -374,7 +377,7 @@ void Team::SetVisibleEnemies() {
 }
 
 //Updates the enemies that this team has encountered, and are still alive
-void Team::UpdateTrackedEnemies() {
+void Team::updateTrackedEnemies() {
 
 	//looping through all of the visible enemies
 	for (int i = 0; i < (int)_visibleEnemies.size(); i++) {
@@ -393,32 +396,32 @@ void Team::UpdateTrackedEnemies() {
 }
 
 //Returns all the visible enemies to this team
-vector<AICharacter*> Team::GetVisibleEnemies() {
+vector<AICharacter*> Team::getVisibleEnemies() {
 
 	return _visibleEnemies;
 }
 
 //Returns all the enemies this teams know are alive
-vector<AICharacter*> Team::GetTrackedEnemies() {
+vector<AICharacter*> Team::getTrackedEnemies() {
 
 	return _trackedEnemies;
 }
 
 //Draws characters from this teams perspective. Not a proper implementation, doesn't belong to team class
 //for demonstrational purposes only
-void Team::Draw() {
+void Team::draw() {
 
 	for (int i = 0; i < (int)_teamMembers.size(); i++) {
 
 		Character * derived = dynamic_cast<Character*>(_teamMembers[i]);
 
-		derived->Draw();
+		derived->draw();
 	}
 
 	for (int i = 0; i < (int)_visibleEnemies.size(); i++) {
 
 		Character * derived = dynamic_cast<Character*>(_visibleEnemies[i]);
 
-		derived->Draw();
+		derived->draw();
 	}
 }

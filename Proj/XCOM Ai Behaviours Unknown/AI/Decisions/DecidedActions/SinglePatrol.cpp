@@ -9,7 +9,7 @@ SinglePatrol::SinglePatrol(DecisionTree * tree)
 }
 
 //Character should patrol for enemies
-Action* SinglePatrol::Run() {
+Action* SinglePatrol::run() {
 
 	return new Patrol(Tree->Character, 0);
 }

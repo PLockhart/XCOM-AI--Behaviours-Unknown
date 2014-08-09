@@ -10,7 +10,7 @@ Sprite2D::Sprite2D(TGATexture texture) {
 }
 
 //Draws the texture at its position, from the top left
-void Sprite2D::Draw() {
+void Sprite2D::draw() {
 
 	glPushMatrix();
 

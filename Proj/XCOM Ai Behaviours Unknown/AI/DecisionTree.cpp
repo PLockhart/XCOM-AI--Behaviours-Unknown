@@ -16,13 +16,13 @@ DecisionTree::DecisionTree(AICharacter * actor, Level * level) {
 	GameLevel = level;
 
 	//build the decision tree
-	BuildTree();
+	buildTree();
 
 	DebugEnabled = false;
 }
 
 //Builds the decision tree for a typical character
-void DecisionTree::BuildTree() {
+void DecisionTree::buildTree() {
 
 	//build tree across the branches from the bottom up
 
@@ -99,27 +99,26 @@ DecisionTree::~DecisionTree() {
 }
 
 //Runs the decision tree
-Action* DecisionTree::Run() {
+Action* DecisionTree::run() {
 
 	_recentLogs.clear();
 
 	//return the resulted action from processing the tree
-	Action * result = Root->Run();
+	Action * result = Root->run();
 
 	return result;
 }
 
-void DecisionTree::Log(string message) {
+void DecisionTree::log(string message) {
 
 	if (DebugEnabled == true) {
 
 		_recentLogs.push_back(message);
-		//std::cout<< message << std::endl;
 	}
 }
 
 //draw the thought process when going through this tree
-void DecisionTree::Draw() {
+void DecisionTree::draw() {
 
 	glPushMatrix();
 
@@ -135,7 +134,7 @@ void DecisionTree::Draw() {
 		//draw all the logs near the acting character
 		glRasterPos2f(drawPos.x, drawPos.y);
 
-		DrawString(_recentLogs[i]);
+		drawString(_recentLogs[i]);
 
 		drawPos.y += 10;
 	}
@@ -143,7 +142,7 @@ void DecisionTree::Draw() {
 	glPopMatrix();
 }
 
-void DecisionTree::DrawString(string input) {
+void DecisionTree::drawString(string input) {
 
 	for (int i = 0; i < (int)input.size(); i++)
 		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, input[i]);

@@ -18,7 +18,7 @@ public:
 public:
 	Decision::Decision(DecisionTree * tree);
 	Decision::~Decision();
-	virtual Action* Run() = 0;	//Action returned must be deleted if not used
+	virtual Action* run() = 0;	//Action returned must be deleted if not used
 };
 
 //For the end of a path in a decision tree
@@ -28,7 +28,7 @@ class DecisionAction : public Decision {
 	//===================================================
 public:
 	DecisionAction::DecisionAction(DecisionTree * tree);
-	virtual Action* Run() = 0;
+	virtual Action* run() = 0;
 };
 
 #endif

@@ -7,6 +7,11 @@
 #include "../../PathFinding.h"
 #include "../../../Containers/DataContainers.h"
 
+//The penalty to a tile if the enemy will be flanking it. Decreasing this makes the AI not as concerned about being flanked
+const int FALLBACK_FLANK_PENALTY_CONST = 1000;
+//Tiles that are within this distance of an enemy are considered too close and will be penalised.
+const int FALLBACK_ENEMY_TOO_CLOSE_CONST = 120;
+
 //Creates a move action for the character to the safeest place from enemy fire
 //only considering tiles a certain amount away
 FallBack::FallBack(DecisionTree * tree, int tilesDeep)
@@ -16,11 +21,11 @@ FallBack::FallBack(DecisionTree * tree, int tilesDeep)
 }
 
 //Character should fall back to a safer position
-Action* FallBack::Run() {
+Action* FallBack::run() {
 
 	//flood the map of all the places we can move to within a long range
 	vector<Tile*> fallbackPositions;
-	PathFinding::FloodMap(fallbackPositions, Tree->Character->CurrentTile, Tree->Character->Speed * _tilesDeep);
+	PathFinding::floodMap(fallbackPositions, Tree->Character->CurrentTile, Tree->Character->Speed * _tilesDeep);
 
 	for (int i = 0; i < (int)fallbackPositions.size(); i++) {
 		
@@ -33,7 +38,7 @@ Action* FallBack::Run() {
 	}
 
 	//get the assumed enemy infulence in the level
-	vector<InfulenceData> enemyInfulence = Tree->CharTeam->GetAssumedEnemyInfulencedTiles();
+	vector<InfulenceData> enemyInfulence = Tree->CharTeam->getAssumedEnemyInfulencedTiles();
 
 	//weight the tiles against the enemies infulence across them
 	for (int i = 0; i < (int)fallbackPositions.size(); i++) {
@@ -51,7 +56,7 @@ Action* FallBack::Run() {
 		}
 	}
 
-	vector<AICharacter*> visibleEnemies = Tree->CharTeam->GetVisibleEnemies();
+	vector<AICharacter*> visibleEnemies = Tree->CharTeam->getVisibleEnemies();
 
 	//weight the possible positions by how far away they are from enemies
 	for (int i = 0; i < (int)fallbackPositions.size(); i++) {
@@ -66,7 +71,7 @@ Action* FallBack::Run() {
 
 			float distance = visibleEnemies[j]->Position.distance(fallbackPositions[i]->Position);
 
-			if (distance <= 120)
+			if (distance <= FALLBACK_ENEMY_TOO_CLOSE_CONST)
 				fallbackPositions[i]->Weighting += distance * 10;
 
 			else
@@ -80,9 +85,9 @@ Action* FallBack::Run() {
 
 			//if the angle to the enemy is similair to the angle to the possible fallback position, then we are moving towards an enemy
 			//and thus should be peanalised heavily
-			if (Rotations::RotationsSimilair(angleToTile, angleToEnemy, 100) == true) {
+			if (Rotations::rotationsSimilair(angleToTile, angleToEnemy, 100) == true) {
 
-				fallbackPositions[i]->Weighting += 1000;
+				fallbackPositions[i]->Weighting += FALLBACK_FLANK_PENALTY_CONST;
 			}
 		}
 
@@ -110,6 +115,6 @@ Action* FallBack::Run() {
 		fallbackPositions[i]->Weighting = 0;
 	}
 
-	Tree->Log("Wants to fall back");
+	Tree->log("Wants to fall back");
 	return new MoveAction(Tree->Character, bestTile, 1);
 }

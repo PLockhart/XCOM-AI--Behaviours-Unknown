@@ -22,25 +22,25 @@ Camera::Camera(ViewType viewType, float depth, float fov) {
 	_lookAt = Vector3(0, 0, -1);
 	_upVector = Vector3(0, 1, 0);
 
-	InitView(viewType);
+	initView(viewType);
 }
 
 //modifys the camera's depth
-void Camera::SetDepthTo(float depth) {
+void Camera::setDepthTo(float depth) {
 
 	_depth = depth;
-	InitView(_viewType);
+	initView(_viewType);
 }
 
 //modifys the camera's fov
-void Camera::SetFOVTo(float fov) {
+void Camera::setFOVTo(float fov) {
 
 	_fov = fov;
-	InitView(_viewType);
+	initView(_viewType);
 }
 
 //inits the appropiate opengl view according to the view type
-void Camera::InitView(ViewType type) {
+void Camera::initView(ViewType type) {
 
 	_viewType = type;
 
@@ -62,7 +62,7 @@ void Camera::InitView(ViewType type) {
 }
 
 //move the cameras position in the world by the parameter
-void Camera::ModifyPositionBy(Vector3 modifier) {
+void Camera::modifyPositionBy(Vector3 modifier) {
 
 	//when moving forwards and backwards move relative to where camera is looking
 	Position.x += modifier.z * _lookAt.x;
@@ -75,7 +75,7 @@ void Camera::ModifyPositionBy(Vector3 modifier) {
 }
 
 //rotate the camera axis' by angles dicated by the parameter
-void Camera::ModifyRotationBy(Vector3 angles) {
+void Camera::modifyRotationBy(Vector3 angles) {
 
 	//update the camera rotations
 	Rotation.x += angles.x;
@@ -91,7 +91,7 @@ void Camera::ModifyRotationBy(Vector3 angles) {
 }
 
 //moves the view to match that of the camera's position and look to
-void Camera::MoveGLView() {
+void Camera::moveGLView() {
 
 	//set camera position and orientation
 	gluLookAt(Position.x, Position.y, Position.z, 

@@ -18,107 +18,107 @@ AttackAction::AttackAction(AICharacter * actor, AICharacter * target, int priori
 	Target = target;
 }
 
-void AttackAction::Setup() {
+void AttackAction::setup() {
 
 	_isSetupFin = true;
-	RegisterAttack();
+	registerAttack();
 }
 
-void AttackAction::RegisterAttack() {
+void AttackAction::registerAttack() {
 
-	Target->RegisterAttack(AttackData(ActingCharacter, kBasic));
+	Target->registerAttack(AttackData(ActingCharacter, kBasic));
 }
 
 //Returns true if the weapon is ready to fire and is trained on the enemy
-bool AttackAction::WeaponReady() {
+bool AttackAction::isWeaponReady() {
 
 	//only shoot if...
 	//we have line of sight
-	if (Raycast::CastRay(ActingCharacter->CurrentTile, Target->CurrentTile) == true &&
+	if (Raycast::castRay(ActingCharacter->CurrentTile, Target->CurrentTile) == true &&
 		//the weapon has ammo
-		ActingCharacter->Weapon->CanShoot() == true &&
+		ActingCharacter->Weapon->canShoot() == true &&
 		//the weapon is in range of target
-		ActingCharacter->Weapon->IsInRange(Target->Position) == true)
+		ActingCharacter->Weapon->isInRange(Target->Position) == true)
 		return true;
 
 	return false;
 }
 
 //Performs the attack action
-void AttackAction::PerformAttack() {
+void AttackAction::performAttack() {
 
-	ActingCharacter->Weapon->ShootAt(Target);
+	ActingCharacter->Weapon->shootAt(Target);
 }
 
 //Shoots at the target while it still can
-void AttackAction::Act(float dt, AICharacter * sender) {
+void AttackAction::act(float dt, AICharacter * sender) {
 
-	Action::Act(dt, sender);
+	Action::act(dt, sender);
 
 	if (Target->IsDead == true)
-		Finished();
+		finished();
 
 	//work out the direction we have to face
 	Vector3 dirVector = Target->Position - ActingCharacter->Position;
 
 	//resolve vector into an angle, where 0 is facing up n degrees
 	float targetRot = ((atan2(dirVector.y, dirVector.x) * 180) / 3.1415926) + 90;
-	Rotations::ClampDegreeRotation(targetRot);
+	Rotations::clampDegreeRotation(targetRot);
 
-	if (WeaponReady() == true) {
+	if (isWeaponReady() == true) {
 
 		//Only allow the movement along the direction vector if they are facing the general direction
-		if (Rotations::RotationsSimilair(ActingCharacter->Rotation, (int)targetRot, ActingCharacter->RotSpeed) == true) {
+		if (Rotations::rotationsSimilair(ActingCharacter->Rotation, (int)targetRot, ActingCharacter->RotSpeed) == true) {
 
-			PerformAttack();
-			ActingCharacter->FaceTowards(Target->Position);
+			performAttack();
+			ActingCharacter->faceTowards(Target->Position);
 		}
 
 		//else rotate to face them
 		else {
 
 			//rotate the charcter to face the target
-			ActingCharacter->RotateBy(Rotations::RotDir(ActingCharacter->Rotation, targetRot) * ActingCharacter->RotSpeed);
+			ActingCharacter->rotateBy(Rotations::RotDir(ActingCharacter->Rotation, targetRot) * ActingCharacter->RotSpeed);
 		}
 	}
 	//else if the weapon is not ready then stop the action
 	else
-		Finished();
+		finished();
 }
 
 //cancels shooting at the target
-bool AttackAction::CanInterrupt() {
+bool AttackAction::canInterrupt() {
 
 	return true;
 }
 
 //Cant do anything while attacking
-bool AttackAction::CanDoBoth(Action * other) {
+bool AttackAction::canDoBoth(Action * other) {
 
 	return false;
 }
 
 //No shutdown routine for attacking, so just finish the attack action
-void AttackAction::Cancel() {
+void AttackAction::cancel() {
 
-	Action::Cancel();
-	Finished();
+	Action::cancel();
+	finished();
 }
 
-void AttackAction::HardCancel() {
+void AttackAction::hardCancel() {
 
 	//the normal cancel of an attack action is immediate, so just call it
-	Cancel();
+	cancel();
 }
 
 //Set the tile to be occupied then call the super finished method
-void AttackAction::Finished() {
+void AttackAction::finished() {
 
-	Target->UnRegisterAttacker(ActingCharacter);
-	Action::Finished();
+	Target->unRegisterAttacker(ActingCharacter);
+	Action::finished();
 }
 
-bool AttackAction::IsSameKind(Action * other) {
+bool AttackAction::isSameKind(Action * other) {
 
 	if (AttackAction * derived = dynamic_cast<AttackAction*>(other))
 		return true;
@@ -126,10 +126,10 @@ bool AttackAction::IsSameKind(Action * other) {
 	return false;
 }
 
-bool AttackAction::ShouldGiveWayTo(Action * other) {
+bool AttackAction::shouldGiveWayTo(Action * other) {
 
 	//if they are of the same type..
-	if (IsSameKind(other) == true) {
+	if (isSameKind(other) == true) {
 
 		AttackAction * otherAtt = dynamic_cast<AttackAction*>(other);
 
@@ -150,7 +150,7 @@ bool AttackAction::ShouldGiveWayTo(Action * other) {
 	return false;
 }
 
-std::string AttackAction::ToString() {
+std::string AttackAction::toString() {
 
 	return "Attacking";
 }

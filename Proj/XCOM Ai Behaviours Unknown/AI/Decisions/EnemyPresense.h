@@ -7,7 +7,7 @@ class EnemyPresense : public Decision {
 
 public:
 	EnemyPresense::EnemyPresense(DecisionTree * tree);
-	Action* Run();
+	Action* run();
 };
 
 #endif

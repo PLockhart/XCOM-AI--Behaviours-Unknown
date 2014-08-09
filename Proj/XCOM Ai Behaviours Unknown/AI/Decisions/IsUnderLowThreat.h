@@ -14,7 +14,7 @@ private:
 	//===================================================
 public:
 	IsUnderLowThreat::IsUnderLowThreat(DecisionTree * tree, float threatConstant);
-	Action* Run();
+	Action* run();
 };
 
 #endif

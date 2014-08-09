@@ -9,7 +9,7 @@
 //Casts a ray, returns true if could reach the destination. Works with;
 //the tile we are casting from
 //the tile we are casting to
-bool Raycast::CastRay(Tile * source, Tile *destination) {
+bool Raycast::castRay(Tile * source, Tile *destination) {
 
 	Level * level = source->ParentLevel;
 
@@ -67,7 +67,7 @@ bool Raycast::CastRay(Tile * source, Tile *destination) {
 }
 
 //Populates a list of all the tiles that are visible from a source tile in a level. The most accuracte out of the ones below
-void Raycast::VisibleTiles(vector<Tile*> &visibleTiles, Tile * source) {
+void Raycast::visibleTiles(vector<Tile*> &visibleTiles, Tile * source) {
 
 	Level * level = source->ParentLevel;
 
@@ -84,7 +84,7 @@ void Raycast::VisibleTiles(vector<Tile*> &visibleTiles, Tile * source) {
 			if (loopedTile != source) {
 
 				//if we can see it, add it to visible list
-				if (Raycast::CastRay(source, loopedTile))
+				if (Raycast::castRay(source, loopedTile))
 					visibleTiles.push_back(loopedTile);
 			}
 		}
@@ -96,7 +96,7 @@ OTHER WORKING IMPLEMENTATIONS with varying degrees of accuracy
 
 Using raycasts to the edge of the level from the source. Didn't work well
 //Populates a list of all the tiles that are visible from a source tile in a level
-void Raycast::VisibleTiles(vector<Tile*> &visibleTiles, Tile * source) {
+void Raycast::visibleTiles(vector<Tile*> &visibleTiles, Tile * source) {
 
 	Level * level = source->ParentLevel;
 
@@ -187,7 +187,7 @@ void Raycast::VisibleTiles(vector<Tile*> &visibleTiles, Tile * source) {
 
 /*Using angle and direction vectors to traverse a level. Worked ok
 //Populates a list of all the tiles that are visible from a source tile in a level
-void Raycast::VisibleTiles(vector<Tile*> &visibleTiles, Tile * source) {
+void Raycast::visibleTiles(vector<Tile*> &visibleTiles, Tile * source) {
 
 	Level * level = source->ParentLevel;
 	vector<Tile*> hiddenTiles;

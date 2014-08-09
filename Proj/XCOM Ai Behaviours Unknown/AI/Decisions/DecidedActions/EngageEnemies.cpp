@@ -5,15 +5,18 @@
 #include "../../Actions/Attackaction.h"
 #include "../../../Characters and Weapons/BaseWeapon.h"
 
+//Constant when calculating enemies threat. Increasing this means a character won't feel as threatened by enemies
+const int ENGAGE_ENEMIES_THREAT_CONST = 10;
+
 EngageEnemies::EngageEnemies(DecisionTree * tree)
 	: DecisionAction(tree) {
 
 }
 
 //Character engages the enemy it has the best chacne of hitting
-Action* EngageEnemies::Run() {
+Action* EngageEnemies::run() {
 
-	Tree->Log("Firing at enemies");
+	Tree->log("Firing at enemies");
 
 	vector<AICharacter*> targetableEnemies;
 
@@ -23,7 +26,7 @@ Action* EngageEnemies::Run() {
 		AICharacter * loopedEnemy = Tree->Character->VisibleEnemies[i];
 
 		//if in range of the weapon, add it to the targetable list
-		if (Tree->Character->Weapon->GetAccuracyToTarget(loopedEnemy->Position) > 0)
+		if (Tree->Character->Weapon->getAccuracyToTarget(loopedEnemy->Position) > 0)
 			targetableEnemies.push_back(loopedEnemy);
 	}
 
@@ -37,11 +40,11 @@ Action* EngageEnemies::Run() {
 
 		AICharacter * loopedEnemy = targetableEnemies[i];
 		//work out our accuracy to the enemy
-		float accToLoop = Tree->Character->Weapon->GetAccuracyToCharIncCover(loopedEnemy);
+		float accToLoop = Tree->Character->Weapon->getAccuracyToCharIncCover(loopedEnemy);
 
 		//work out the enemies threat to us
-		float threatFromLoop = loopedEnemy->Weapon->GetAccuracyToCharIncCover(Tree->Character) * loopedEnemy->Weapon->BulletsPerShot;
-		float totalWeighting = accToLoop + threatFromLoop / 10; //divide threat by a constant
+		float threatFromLoop = loopedEnemy->Weapon->getAccuracyToCharIncCover(Tree->Character) * loopedEnemy->Weapon->BulletsPerShot;
+		float totalWeighting = accToLoop + threatFromLoop / ENGAGE_ENEMIES_THREAT_CONST; //divide threat by a constant
 
 		//if we have a new higher threat, switch to that target
 		if (totalWeighting > bestTargetWeighting) {

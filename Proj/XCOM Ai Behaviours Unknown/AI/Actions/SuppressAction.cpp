@@ -10,18 +10,18 @@ SuppressAction::SuppressAction(AICharacter * actor, AICharacter * target, int pr
 
 }
 
-void SuppressAction::RegisterAttack() {
+void SuppressAction::registerAttack() {
 
-	Target->RegisterAttack(AttackData(ActingCharacter, kSuppressing));
+	Target->registerAttack(AttackData(ActingCharacter, kSuppressing));
 }
 
 //Suppresses the target
-void SuppressAction::PerformAttack() {
+void SuppressAction::performAttack() {
 
-	ActingCharacter->Weapon->SuppressTarget(Target);
+	ActingCharacter->Weapon->suppressTarget(Target);
 }
 
-bool SuppressAction::IsSameKind(Action * other) {
+bool SuppressAction::isSameKind(Action * other) {
 
 	if (SuppressAction * derived = dynamic_cast<SuppressAction*>(other))
 		return true;
@@ -29,18 +29,18 @@ bool SuppressAction::IsSameKind(Action * other) {
 	return false;
 }
 
-bool SuppressAction::ShouldGiveWayTo(Action * other) {
+bool SuppressAction::shouldGiveWayTo(Action * other) {
 
 	//if we have no one to suppress for, then give way to whatever action
-	if (ActingCharacter->ParentTeam->GetTeammatesOf(ActingCharacter).size() == 0)
+	if (ActingCharacter->ParentTeam->getTeammatesOf(ActingCharacter).size() == 0)
 		return true;
 
 	//otherwise, do normal action handling
 	else
-		return AttackAction::ShouldGiveWayTo(other);
+		return AttackAction::shouldGiveWayTo(other);
 }
 
-std::string SuppressAction::ToString() {
+std::string SuppressAction::toString() {
 
 	return "Suppressing";
 }

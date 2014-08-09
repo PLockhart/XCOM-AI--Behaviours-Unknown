@@ -26,9 +26,9 @@ BaseWeapon::BaseWeapon() {
 }
 
 //Fires the weapon at the target
-void BaseWeapon::ShootAt(AICharacter * target) {
+void BaseWeapon::shootAt(AICharacter * target) {
 	
-	if (CanShoot() == true && IsInRange(target->Position) == true && _fireCooldownTime <= 0) {
+	if (canShoot() == true && isInRange(target->Position) == true && _fireCooldownTime <= 0) {
 
 		//reduce the clip size and reset the time until we can fire next
 		_shotsInClip--;
@@ -36,13 +36,13 @@ void BaseWeapon::ShootAt(AICharacter * target) {
 
 		_weaponFired = true;
 
-		float calAccuracy = GetAccuracyToCharIncCover(target);
+		float calAccuracy = getAccuracyToCharIncCover(target);
 
 		if (rand() % 100 < calAccuracy) {
 
 			//hit target, damage them for the amount of bullets we fire
 			for (int i = 0; i < BulletsPerShot; i++) 
-				target->DamageTaken(Holder);
+				target->damageTaken(Holder);
 
 			_targetPos = target->Position;
 			_shotType = kHit;
@@ -57,13 +57,13 @@ void BaseWeapon::ShootAt(AICharacter * target) {
 }
 
 //Returns the accuracy of the weapon when firing to a certain position. Ignores cover
-float BaseWeapon::GetAccuracyToTarget(Vector3 targetPos) {
+float BaseWeapon::getAccuracyToTarget(Vector3 targetPos) {
 
-	return GetAccuracyFromPlaceToTarget(Holder->Position, targetPos);
+	return getAccuracyFromPlaceToTarget(Holder->Position, targetPos);
 }
 
 //Returns the accuracy of the weapon if it was at a given position, firing to a certain position. Ignores cover
-float BaseWeapon::GetAccuracyFromPlaceToTarget(Vector3 startPos, Vector3 targetPos) {
+float BaseWeapon::getAccuracyFromPlaceToTarget(Vector3 startPos, Vector3 targetPos) {
 
 	float distance = startPos.distance(targetPos);
 	
@@ -87,20 +87,20 @@ float BaseWeapon::GetAccuracyFromPlaceToTarget(Vector3 startPos, Vector3 targetP
 }
 
 //Returns the accuracy of the weapon when shooting at a specified target, taking into account cover
-float BaseWeapon::GetAccuracyToCharIncCover(AICharacter * target) {
+float BaseWeapon::getAccuracyToCharIncCover(AICharacter * target) {
 
 	//get the base accuracy to the position the target is at
-	float acc = GetAccuracyToTarget(target->Position);
+	float acc = getAccuracyToTarget(target->Position);
 
 	//if the target is in cover from our attack, reduce the accuracy
-	if (target->IsInCoverFromAttack(Holder->Position) == true)
+	if (target->isInCoverFromAttack(Holder->Position) == true)
 			acc /= CoverPenalty;
 
 	return acc;
 }
 
 //Flag for whether the weapon can shoot, where it either has no ammo or is currently being reloaded
-bool BaseWeapon::CanShoot() {
+bool BaseWeapon::canShoot() {
 
 	if (_shotsInClip >= 1 && IsReloading == false)	
 		return true;
@@ -109,16 +109,16 @@ bool BaseWeapon::CanShoot() {
 }
 
 //Checks to see if the weapon is in range of a target
-bool BaseWeapon::IsInRange(Vector3 position) {
+bool BaseWeapon::isInRange(Vector3 position) {
 
-	if (GetAccuracyToTarget(position) > 0)
+	if (getAccuracyToTarget(position) > 0)
 		return true;
 
 	return false;
 }
 
 //Starts reloading the weapon if it is not already doing so
-void BaseWeapon::Reload() {
+void BaseWeapon::reload() {
 
 	if (IsReloading == false) {
 
@@ -128,10 +128,10 @@ void BaseWeapon::Reload() {
 }
 
 //Supresses a target, reducing the weapons shots in clip and modifying the targets accuracy/move modifiers
-void BaseWeapon::SuppressTarget(AICharacter * target) {
+void BaseWeapon::suppressTarget(AICharacter * target) {
 
 	//check if the weapon is capable of suppression, and is in range of target
-	if (CanSuppress() == true && IsInRange(target->Position)) {
+	if (canSuppress() == true && isInRange(target->Position)) {
 
 		//a suppression's effect on a unit is continous, but only reduce its cooldowns..
 		//..and only draw within the cool down boundaries. This prevents a constant line effect and rapid ammo draining
@@ -155,7 +155,7 @@ void BaseWeapon::SuppressTarget(AICharacter * target) {
 }
 
 //Updates the weapon/cooldowns etc
-void BaseWeapon::Update(float dt) {
+void BaseWeapon::update(float dt) {
 
 	_weaponFired = false;
 
@@ -177,7 +177,7 @@ void BaseWeapon::Update(float dt) {
 	}
 
 	//update the characters aggression depending on the amount of ammo left
-	if (GetAmmoRatio() <= 0.25f) {
+	if (getAmmoRatio() <= 0.25f) {
 
 		if (_shotsInClip <= 0)
 			Holder->Aggression = 0;
@@ -187,13 +187,13 @@ void BaseWeapon::Update(float dt) {
 }
 
 //returns the ratio between the number of shots in the gun compared to its max capcity
-float BaseWeapon::GetAmmoRatio() {
+float BaseWeapon::getAmmoRatio() {
 
 	return _shotsInClip / (float)ClipSize;
 }
 
 //Draws any shot simulations that the weapon may have done
-void BaseWeapon::Draw() {
+void BaseWeapon::draw() {
 
 	if (_weaponFired == true) {
 

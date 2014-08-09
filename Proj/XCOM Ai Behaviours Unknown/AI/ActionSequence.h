@@ -17,24 +17,24 @@ public:
 	//Methods
 	//===================================================
 	ActionSequence::ActionSequence(int priority);
-	void AddAction(Action * newAct);
+	void addAction(Action * newAct);
 
-	void Act(float dt, AICharacter * sender);
-	bool CanInterrupt();
-	bool CanDoBoth(Action * other);
-	void Cancel();
-	void HardCancel();
+	void act(float dt, AICharacter * sender);
+	bool canInterrupt();
+	bool canDoBoth(Action * other);
+	void cancel();
+	void hardCancel();
 
-	Action * FrontAction();
+	Action * frontAction();
 
-	bool IsSameKind(Action * other);
-	bool ShouldGiveWayTo(Action * other);
+	bool isSameKind(Action * other);
+	bool shouldGiveWayTo(Action * other);
 
-	std::string ToString();
+	std::string toString();
 
 protected:
-	void Setup();
-	virtual void Finished();	//Is triggered when the action has been completed
+	void setup();
+	virtual void finished();	//Is triggered when the action has been completed
 };
 
 #endif

@@ -20,23 +20,23 @@ protected:
 	//===================================================
 public:
 	MoveAction::MoveAction(AICharacter * character, Tile * destination, int priority);
-	void Act(float dt, AICharacter * sender);
-	void Cancel();
-	bool CanInterrupt();
-	bool CanDoBoth(Action * other);
-	virtual bool IsSameKind(Action * other);
-	virtual bool ShouldGiveWayTo(Action *other);
+	void act(float dt, AICharacter * sender);
+	void cancel();
+	bool canInterrupt();
+	bool canDoBoth(Action * other);
+	virtual bool isSameKind(Action * other);
+	virtual bool shouldGiveWayTo(Action *other);
 
-	virtual std::string ToString();
+	virtual std::string toString();
 
 protected:
 	MoveAction::MoveAction(int priority);
-	void Finished();	//Is triggered when the action has been completed
+	void finished();	//Is triggered when the action has been completed
 
 protected:
-	virtual bool GetPathwayData(vector<Tile*> &pathway, Tile * start, Tile * destination);
-	virtual Tile* GetIdealFallback();
-	virtual void Setup();
+	virtual bool getPathwayData(vector<Tile*> &pathway, Tile * start, Tile * destination);
+	virtual Tile* getIdealFallback();
+	virtual void setup();
 };
 
 #endif

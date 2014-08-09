@@ -8,16 +8,19 @@
 #include "../Team.h"
 #include "../../Level/Tile.h"
 
+//the max amount of recent tiles we keep track of. Increasing this will improve patrol quality but decrease performance
+const int PATROL_MAX_TILE_CONST = 4;
+
 //Creates a new patrol action, which will create new move actions to new points of high visibility
 //Action finishes when an enemy is in sight
 Patrol::Patrol(AICharacter * character, int priority)
 : Action(priority) {
 
 	ActingCharacter = character;
-	_maxRecent = 4;
+	_maxRecent = PATROL_MAX_TILE_CONST;
 }
 
-void Patrol::Setup() {
+void Patrol::setup() {
 
 	_isSetupFin = true;
 
@@ -25,28 +28,28 @@ void Patrol::Setup() {
 	_recentTiles.push_back(ActingCharacter->CurrentTile);
 	
 	//now find the best tile to move to next and create a move to that
-	Tile * best = PickBestLOSTileFor(ActingCharacter);
+	Tile * best = pickBestLOSTileFor(ActingCharacter);
 	PatrolMove = new MoveAction(ActingCharacter, best, Priority);
 }
 
 //Performs the patrol action, by performing the PatrolMove
-void Patrol::Act(float dt, AICharacter * sender) {
+void Patrol::act(float dt, AICharacter * sender) {
 	
-	Action::Act(dt, sender);
+	Action::act(dt, sender);
 
 	MoverAct(dt, sender);
 
 	//cancel the patrol if we have found an enemy
 	if ((int)ActingCharacter->ParentTeam->EnemyPositionHist.size() > 0 && State != kCancelling)
-		Cancel();
+		cancel();
 
 	//if this patrol is cancelling
 	if (State == kCancelling) {
 
 		//check to see if the patrol move has finished cancelling
-		if (PatrolMove->IsActionComplete() == true) {
+		if (PatrolMove->isActionComplete() == true) {
 			//if so, we can finish this patrol action
-			Finished();
+			finished();
 		}
 	}
 }
@@ -55,41 +58,41 @@ void Patrol::Act(float dt, AICharacter * sender) {
 void Patrol::MoverAct(float dt, AICharacter * sender) {
 
 	//see if we have are still moving to a new vantage point
-	if (PatrolMove->IsActionComplete() == false) {
+	if (PatrolMove->isActionComplete() == false) {
 
-		PatrolMove->Act(dt, sender);
+		PatrolMove->act(dt, sender);
 	}
 	//else if the move to action has finished, we need to either end the patrol action or create a new one
 	else {
 
-		MoverFinished();
+		moverFinished();
 	}
 }
 
 //event for when the mover has finished their movement to their destination
-void Patrol::MoverFinished() {
+void Patrol::moverFinished() {
 
 	delete PatrolMove;
 
 	//if we aren't cancelling the patrol, begin a new patrol
 	if (State != kCancelling) {
 
-		Tile * best = PickBestLOSTileFor(ActingCharacter);
+		Tile * best = pickBestLOSTileFor(ActingCharacter);
 		PatrolMove = new MoveAction(ActingCharacter, best, Priority);
 	}
 
 	else
-		Finished();
+		finished();
 }
 
 //Gets all the best tiles to move to within a reasonable move distance. Returns a vector of candidates in order of best
-vector<Tile*> Patrol::GetBestLOSCandidatesFor(AICharacter * character) {
+vector<Tile*> Patrol::getBestLOSCandidatesFor(AICharacter * character) {
 
 	vector<Tile*> moveCandidates;
-	PathFinding::FloodMap(moveCandidates, character->CurrentTile, character->Speed * 1.5f);
+	PathFinding::floodMap(moveCandidates, character->CurrentTile, character->Speed * 1.5f);
 
-	vector<InfulenceData> teamInfulence = character->ParentTeam->GetInfulencedTiles();
-	vector<TileHistory> teamHistory = character->ParentTeam->GetTeamTileHistory();
+	vector<InfulenceData> teamInfulence = character->ParentTeam->getInfulencedTiles();
+	vector<TileHistory> teamHistory = character->ParentTeam->getTeamTileHistory();
 
 	//loop through all of the move candidates and sorting them by their score..
 	//..which is calculated by weighting the tile's LOS with tiles that the team can see
@@ -105,7 +108,7 @@ vector<Tile*> Patrol::GetBestLOSCandidatesFor(AICharacter * character) {
 			continue;
 		}
 
-		vector<Tile*> losTiles = loopedCandidate->GetLosTiles();
+		vector<Tile*> losTiles = loopedCandidate->getLosTiles();
 		loopedCandidate->Weighting = (int)losTiles.size();
 
 		//score the tile based off the number of los tiles that are in common with the team's tile infulence
@@ -173,9 +176,9 @@ vector<Tile*> Patrol::GetBestLOSCandidatesFor(AICharacter * character) {
 	return moveCandidates;
 }
 
-Tile* Patrol::PickBestLOSTileFor(AICharacter * character) {
+Tile* Patrol::pickBestLOSTileFor(AICharacter * character) {
 
-	vector<Tile*> moveCandidates = GetBestLOSCandidatesFor(character);
+	vector<Tile*> moveCandidates = getBestLOSCandidatesFor(character);
 
 	if ((int)_recentTiles.size() >= _maxRecent)
 		//erase the oldest
@@ -189,39 +192,39 @@ Tile* Patrol::PickBestLOSTileFor(AICharacter * character) {
 }
 
 //Cancels the patrol
-void Patrol::Cancel() {
+void Patrol::cancel() {
 
-	PatrolMove->Cancel();
+	PatrolMove->cancel();
 	State = kCancelling;
 }
 
-void Patrol::HardCancel() {
+void Patrol::hardCancel() {
 
-	PatrolMove->HardCancel();
+	PatrolMove->hardCancel();
 	delete PatrolMove;
 
-	Action::HardCancel();
+	Action::hardCancel();
 }
 
 //Patrol actions can be interuppted by interuppting the move action
-bool Patrol::CanInterrupt() {
+bool Patrol::canInterrupt() {
 
 	return true;
 }
 
 //Patrol actions cannot do anything else at the same time
-bool Patrol::CanDoBoth(Action * other) {
+bool Patrol::canDoBoth(Action * other) {
 
 	return false;
 }
 
 //Action for when an enemy has been spotted
-void Patrol::Finished() {
+void Patrol::finished() {
 
-	Action::Finished();
+	Action::finished();
 }
 
-bool Patrol::IsSameKind(Action * other) {
+bool Patrol::isSameKind(Action * other) {
 
 	if (Patrol * derived = dynamic_cast<Patrol*>(other))
 		return true;
@@ -229,10 +232,10 @@ bool Patrol::IsSameKind(Action * other) {
 	return false;
 }
 
-bool Patrol::ShouldGiveWayTo(Action * other) {
+bool Patrol::shouldGiveWayTo(Action * other) {
 
 	//if they are of the same type..
-	if (IsSameKind(other) == true) {
+	if (isSameKind(other) == true) {
 
 		return false;
 	}
@@ -244,7 +247,7 @@ bool Patrol::ShouldGiveWayTo(Action * other) {
 	return false;
 }
 
-std::string Patrol::ToString() {
+std::string Patrol::toString() {
 
 	return "Patrolling";
 }

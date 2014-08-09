@@ -11,7 +11,7 @@ protected:
 
 public:
 	FallBack::FallBack(DecisionTree * tree, int tilesDeep);
-	Action* Run();
+	Action* run();
 };
 
 #endif

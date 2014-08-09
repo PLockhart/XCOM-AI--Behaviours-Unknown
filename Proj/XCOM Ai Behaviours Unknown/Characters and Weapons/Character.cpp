@@ -14,7 +14,7 @@
 //the tile the player should start at
 //the weapon the player should have
 Character::Character(char * fileName, Tile * startTile, BaseWeapon * weapon, Team * team)
-	: Sprite2D(Texture::LoadTexture(fileName)) {
+	: Sprite2D(Texture::loadTexture(fileName)) {
 
 		//set up the positions
 		Sprite2D::Position = startTile->Position;
@@ -22,14 +22,14 @@ Character::Character(char * fileName, Tile * startTile, BaseWeapon * weapon, Tea
 
 		Weapon = weapon;
 		Weapon->Holder = this;
-		AICharacter::RegisterWeapon(weapon);
+		AICharacter::registerWeapon(weapon);
 
 		//set up ai vars
 		AICharacter::DestinationTile = startTile;
 		AICharacter::CurrentTile = startTile;
 		startTile->IsOccupied = true;
-		AICharacter::MovedToTile(startTile);
-		AICharacter::RegisterTeam(team);
+		AICharacter::movedToTile(startTile);
+		AICharacter::registerTeam(team);
 		AICharacter::TheDecisionTree = new DecisionTree(this, startTile->ParentLevel);
 
 		//default values
@@ -39,7 +39,7 @@ Character::Character(char * fileName, Tile * startTile, BaseWeapon * weapon, Tea
 }
 
 //Updates the character
-void Character::Update(float dt) {
+void Character::update(float dt) {
 
 	//match the ai positions and rotations to that of this character
 	AICharacter::Position = Sprite2D::Position;
@@ -47,11 +47,11 @@ void Character::Update(float dt) {
 
 	//only perform the AI if we are not dead
 	if (IsDead == false)
-		AICharacter::Update(dt);
+		AICharacter::update(dt);
 }
 
 //Updates traits of the ai character based on this classes' variables
-void Character::UpdateChildTraits() {
+void Character::updateChildTraits() {
 
 	//reduce the boldness of a character depending on their health
 	float hpRatio = Health / (float)MaxHealth;
@@ -71,7 +71,7 @@ void Character::UpdateChildTraits() {
 
 //Method for when damage is taken from
 //the character holding the weapon
-void Character::DamageTaken(AICharacter * source) {
+void Character::damageTaken(AICharacter * source) {
 
 	if (Health > 0)
 		Health--;
@@ -85,7 +85,7 @@ void Character::DamageTaken(AICharacter * source) {
 		//delete the current action if we have one
 		if (HasAction == true) {
 
-			CurrentAct->HardCancel();
+			CurrentAct->hardCancel();
 			delete CurrentAct;
 			HasAction = false;
 		}
@@ -94,30 +94,30 @@ void Character::DamageTaken(AICharacter * source) {
 			CurrentTile->IsOccupied = false;
 
 		//remove character from its team
-		ParentTeam->RemoveMember(this);
+		ParentTeam->removeMember(this);
 	}
 }
 
-void Character::Draw() {
+void Character::draw() {
 
 	//draw the character
-	Sprite2D::Draw();
+	Sprite2D::draw();
 
 	//draw the weapon and the decision tree though process
 	if (IsDead == false) {
 
-		Weapon->Draw();
-		TheDecisionTree->Draw();
+		Weapon->draw();
+		TheDecisionTree->draw();
 	}
 }
 
-string Character::ToString() {
+string Character::toString() {
 	
 	std::stringstream output;
 	output << "Team ";
 	output << AICharacter::ParentTeam->Identifier;
 	output << " ";
-	output << Weapon->ToString();
+	output << Weapon->toString();
 	output << "man";
 
 	return output.str();
@@ -127,26 +127,26 @@ string Character::ToString() {
 //=============================================================
 
 //Moves the character by a vector
-void Character::MoveBy(Vector3 move) {
+void Character::moveBy(Vector3 move) {
 
 	if (move == Vector3(0, 0, 0))
 		return;
 	
 	//face towards the point we are moving too
-	FaceTowards(Sprite2D::Position + move);
+	faceTowards(Sprite2D::Position + move);
 
 	//move the sprite
 	Sprite2D::Position = Sprite2D::Position + move;
 }
 
 //Rotates the character by an amount of 
-void Character::RotateBy(float amount) {
+void Character::rotateBy(float amount) {
 
 	Sprite2D::Rotation += amount;
 }
 
 //rotates the character to face a point
-void Character::FaceTowards(Vector3 point) {
+void Character::faceTowards(Vector3 point) {
 
 	//work out the direction we have to face
 	Vector3 difference = point - Sprite2D::Position;

@@ -9,15 +9,15 @@ class SuppressAction : public AttackAction {
 	//===================================================
 public:
 	SuppressAction::SuppressAction(AICharacter * actor, AICharacter * target, int priority);
-	bool IsSameKind(Action * other);
+	bool isSameKind(Action * other);
 
-	bool ShouldGiveWayTo(Action *other);
+	bool shouldGiveWayTo(Action *other);
 
-	std::string ToString();
+	std::string toString();
 
 private:
-	void RegisterAttack();
-	void PerformAttack();
+	void registerAttack();
+	void performAttack();
 };
 
 #endif

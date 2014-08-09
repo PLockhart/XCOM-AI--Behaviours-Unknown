@@ -11,13 +11,13 @@ HasMinAmmo::HasMinAmmo(DecisionTree * tree, float minPercent)
 }
 
 //checks to see if the actor has an acceptable amount of ammo
-Action* HasMinAmmo::Run() {
+Action* HasMinAmmo::run() {
 
-	if (Tree->Character->Weapon->GetAmmoRatio() > _minPercent / 100) {
+	if (Tree->Character->Weapon->getAmmoRatio() > _minPercent / 100) {
 
-		return TrueBranch->Run();
+		return TrueBranch->run();
 	}
 
-	Tree->Log("Need ammo");
-	return FalseBranch->Run();
+	Tree->log("Need ammo");
+	return FalseBranch->run();
 }

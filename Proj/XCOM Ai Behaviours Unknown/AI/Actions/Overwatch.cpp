@@ -10,22 +10,22 @@ Overwatch::Overwatch(AICharacter * actor, int priority)
 	_hasAction = false;
 }
 
-void Overwatch::Setup() {
+void Overwatch::setup() {
 
 	_isSetupFin = true;
 }
 
-void Overwatch::Act(float dt, AICharacter * sender) {
+void Overwatch::act(float dt, AICharacter * sender) {
 
-	Action::Act(dt, sender);
+	Action::act(dt, sender);
 
 	//if the overwatch has finished cancelling, finish it
-	if (State == kCancelling && _coveringAction->IsActionComplete()) {
+	if (State == kCancelling && _coveringAction->isActionComplete()) {
 
 		delete _coveringAction;
 		_hasAction = false;
 
-		Finished();
+		finished();
 
 		return;
 	}
@@ -33,11 +33,11 @@ void Overwatch::Act(float dt, AICharacter * sender) {
 	//if we aren't attacking, set up an attack action if enemies are visible
 	if (ActingCharacter->VisibleEnemies.size() > 0) {
 
-		AICharacter * target = ChooseTarget();
+		AICharacter * target = chooseTarget();
 
 		if (_hasAction == false) {
 
-			EngageTarget(target);
+			engageTarget(target);
 		}
 
 		else {
@@ -45,7 +45,7 @@ void Overwatch::Act(float dt, AICharacter * sender) {
 			//if we now have a better target to engage, cancel the covering action
 			if (_coveringAction->Target != target) {
 
-				_coveringAction->Cancel();
+				_coveringAction->cancel();
 			}
 		}
 	}
@@ -53,10 +53,10 @@ void Overwatch::Act(float dt, AICharacter * sender) {
 	if (_hasAction == true) {
 
 		//perform the covering action if we have an action
-		_coveringAction->Act(dt, sender);
+		_coveringAction->act(dt, sender);
 
 		//if the covering action is complete, remove it from memory
-		if (_coveringAction->IsActionComplete() == true) {
+		if (_coveringAction->isActionComplete() == true) {
 
 			delete _coveringAction;
 			_hasAction = false;
@@ -65,17 +65,17 @@ void Overwatch::Act(float dt, AICharacter * sender) {
 }
 
 //Chooses the most easily targetable enemy to shoot at
-AICharacter* Overwatch::ChooseTarget() {
+AICharacter* Overwatch::chooseTarget() {
 
 	vector<AICharacter*> visibleEnemies = ActingCharacter->VisibleEnemies;
 
 	AICharacter * bestTarget = visibleEnemies[0];
-	float bestAccuracy = ActingCharacter->Weapon->GetAccuracyToCharIncCover(bestTarget);
+	float bestAccuracy = ActingCharacter->Weapon->getAccuracyToCharIncCover(bestTarget);
 
 	//loop through all the other enemies and find the most easily targetable
 	for (int i = 1; i < (int)visibleEnemies.size(); i++) {
 
-		float loopedAccuracy = ActingCharacter->Weapon->GetAccuracyToCharIncCover(visibleEnemies[i]);
+		float loopedAccuracy = ActingCharacter->Weapon->getAccuracyToCharIncCover(visibleEnemies[i]);
 
 		if (loopedAccuracy > bestAccuracy) {
 
@@ -88,29 +88,29 @@ AICharacter* Overwatch::ChooseTarget() {
 }
 
 //engages the target with a shooting action
-void Overwatch::EngageTarget(AICharacter * target) {
+void Overwatch::engageTarget(AICharacter * target) {
 
 	_coveringAction = new AttackAction(ActingCharacter, target, Priority);
 }
 
 //overwatch actions can be cancelled
-bool Overwatch::CanInterrupt() {
+bool Overwatch::canInterrupt() {
 
 	return true;
 }
 
-void Overwatch::Cancel() {
+void Overwatch::cancel() {
 
-	Action::Cancel();
-	_coveringAction->Cancel();
+	Action::cancel();
+	_coveringAction->cancel();
 }
 
-bool Overwatch::CanDoBoth(Action * other) {
+bool Overwatch::canDoBoth(Action * other) {
 
 	return false;
 }
 
-bool Overwatch::IsSameKind(Action * other) {
+bool Overwatch::isSameKind(Action * other) {
 
 	if (Overwatch * derived = dynamic_cast<Overwatch*>(other))
 		return true;
@@ -118,10 +118,10 @@ bool Overwatch::IsSameKind(Action * other) {
 	return false;
 }
 
-bool Overwatch::ShouldGiveWayTo(Action * other) {
+bool Overwatch::shouldGiveWayTo(Action * other) {
 
 	//if they are of the same type..
-	if (IsSameKind(other) == true) {
+	if (isSameKind(other) == true) {
 
 		return false;
 	}
@@ -133,7 +133,7 @@ bool Overwatch::ShouldGiveWayTo(Action * other) {
 	return false;
 }
 
-std::string Overwatch::ToString() {
+std::string Overwatch::toString() {
 
 	return "Overwatching";
 }

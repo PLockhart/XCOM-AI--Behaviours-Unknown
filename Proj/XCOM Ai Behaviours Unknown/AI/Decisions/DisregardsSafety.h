@@ -13,7 +13,7 @@ class DisregardsSafety : public Decision {
 	//===================================================
 public:
 	DisregardsSafety::DisregardsSafety(DecisionTree * tree, float threatConstant);
-	Action* Run();
+	Action* run();
 };
 
 #endif

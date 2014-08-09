@@ -12,12 +12,12 @@ class Camera {
 public:
 	//constructors and methods
 	Camera::Camera(ViewType viewType, float depth, float fov);
-	void SetDepthTo(float depth);
-	void SetFOVTo(float fov);
-	void ModifyPositionBy(Vector3 modifier);
-	void ModifyRotationBy(Vector3 angles);
-	void MoveGLView();
-	void InitView(ViewType type);
+	void setDepthTo(float depth);
+	void setFOVTo(float fov);
+	void modifyPositionBy(Vector3 modifier);
+	void modifyRotationBy(Vector3 angles);
+	void moveGLView();
+	void initView(ViewType type);
 
 
 	//variables

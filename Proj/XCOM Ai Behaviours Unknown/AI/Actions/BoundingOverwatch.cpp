@@ -14,7 +14,7 @@ BoundingOverwatch::BoundingOverwatch(AICharacter * char1, AICharacter * char2, i
 : Patrol(char1, priority) {
 
 	//if one of the characters can suppress, make them the coverer
-	if (char1->Weapon->CanSuppress() == true) {
+	if (char1->Weapon->canSuppress() == true) {
 
 		ActingCharacter = char1;
 		CoveringCharacter = char2;
@@ -29,15 +29,15 @@ BoundingOverwatch::BoundingOverwatch(AICharacter * char1, AICharacter * char2, i
 	IsPatrollerInPosition = false;
 }
 
-void BoundingOverwatch::Act(float dt, AICharacter * sender) {
+void BoundingOverwatch::act(float dt, AICharacter * sender) {
 
 	//if the sender of this action is the character who is moving, run the patrol action
 	if (sender == ActingCharacter)
-		Patrol::Act(dt, sender);
+		Patrol::act(dt, sender);
 }
 
 //event for when the mover has finished their movement to their destination
-void BoundingOverwatch::MoverFinished() {
+void BoundingOverwatch::moverFinished() {
 
 	//swap the covering unit and the moving unit
 	AICharacter * temp = ActingCharacter;
@@ -50,20 +50,20 @@ void BoundingOverwatch::MoverFinished() {
 	if (State != kCancelling) {
 
 		//get the best tile that the new covering character can watch over
-		Tile * best = PickBestLOSTileFor(CoveringCharacter);
+		Tile * best = pickBestLOSTileFor(CoveringCharacter);
 
 		//and get the character that was previously covering to move to that new position
 		PatrolMove = new MoveAction(ActingCharacter, best, Priority);
 	}
 
 	else
-		Finished();
+		finished();
 }
 
 //gets the best line of sight tiles in order of best, where tiles are only valid if they can be covered by the character
-vector<Tile*> BoundingOverwatch::GetBestLOSCandidatesFor(AICharacter * character) {
+vector<Tile*> BoundingOverwatch::getBestLOSCandidatesFor(AICharacter * character) {
 
-	vector<Tile*> moveCandidates = Patrol::GetBestLOSCandidatesFor(character);
+	vector<Tile*> moveCandidates = Patrol::getBestLOSCandidatesFor(character);
 
 	//elimate all move candidates that are not covered by the character
 	for (int i = 0; i < (int)moveCandidates.size(); i++) {
@@ -92,35 +92,35 @@ vector<Tile*> BoundingOverwatch::GetBestLOSCandidatesFor(AICharacter * character
 
 
 //Cancels the patrol
-void BoundingOverwatch::Cancel() {
+void BoundingOverwatch::cancel() {
 
-	Patrol::Cancel();
+	Patrol::cancel();
 
 	//allow the other character to immediatly perform other actions
 	CoveringCharacter->HasAction = false;
 }
 
-void BoundingOverwatch::HardCancel() {
+void BoundingOverwatch::hardCancel() {
 
 	if (_isSetupFin == true)
-		Patrol::HardCancel();
+		Patrol::hardCancel();
 
 	CoveringCharacter->HasAction = false;
 }
 
 //Action for when an enemy has been spotted
-void BoundingOverwatch::Finished() {
+void BoundingOverwatch::finished() {
 
-	Patrol::Finished();
+	Patrol::finished();
 }
 
-void BoundingOverwatch::Deleted() {
+void BoundingOverwatch::deleted() {
 
 	ActingCharacter->HasAction = false;
 	CoveringCharacter->HasAction = false;
 }
 
-bool BoundingOverwatch::IsSameKind(Action * other) {
+bool BoundingOverwatch::isSameKind(Action * other) {
 
 	if (BoundingOverwatch * derived = dynamic_cast<BoundingOverwatch*>(other))
 		return true;
@@ -128,10 +128,10 @@ bool BoundingOverwatch::IsSameKind(Action * other) {
 	return false;
 }
 
-bool BoundingOverwatch::ShouldGiveWayTo(Action * other) {
+bool BoundingOverwatch::shouldGiveWayTo(Action * other) {
 
 	//if they are of the same type..
-	if (IsSameKind(other) == true) {
+	if (isSameKind(other) == true) {
 
 		return false;
 	}
@@ -143,7 +143,7 @@ bool BoundingOverwatch::ShouldGiveWayTo(Action * other) {
 	return false;
 }
 
-std::string BoundingOverwatch::ToString() {
+std::string BoundingOverwatch::toString() {
 
 	return "Bounding Overwatch";
 }

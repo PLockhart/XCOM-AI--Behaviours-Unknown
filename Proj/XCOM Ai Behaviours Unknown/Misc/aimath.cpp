@@ -22,7 +22,7 @@
     const Vector3 Vector3::Z = Vector3(0,0,1);
 
 
-	void Rotations::ClampDegreeRotation(float &rotation) {
+	void Rotations::clampDegreeRotation(float &rotation) {
 
 		if (rotation < 0) {
 
@@ -39,10 +39,10 @@
 	}
 
 	//assumes degrees
-	bool Rotations::RotationsSimilair(float rot1, float rot2, float leeway) {
+	bool Rotations::rotationsSimilair(float rot1, float rot2, float leeway) {
 
-		Rotations::ClampDegreeRotation(rot1);
-		Rotations::ClampDegreeRotation(rot2);
+		Rotations::clampDegreeRotation(rot1);
+		Rotations::clampDegreeRotation(rot2);
 
 		int difference = (int)(rot1 - rot2);
 
@@ -55,8 +55,8 @@
 	//Returns the direction (1 clockwise, -1 anticlockwise) for the fastests rotation to a different rotation
 	int Rotations::RotDir(float startRot, float targetRot) {
 
-		Rotations::ClampDegreeRotation(targetRot);
-		Rotations::ClampDegreeRotation(startRot);
+		Rotations::clampDegreeRotation(targetRot);
+		Rotations::clampDegreeRotation(startRot);
 
 		float angleDiff = targetRot - startRot;
 

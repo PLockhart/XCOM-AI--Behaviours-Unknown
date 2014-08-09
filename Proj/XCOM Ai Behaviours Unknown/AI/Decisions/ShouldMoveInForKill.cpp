@@ -14,27 +14,27 @@ ShouldMoveInForKill::ShouldMoveInForKill(DecisionTree * tree, float maxRange, fl
 }
 
 //checks to see if the character should move in to finish off the enemy
-Action* ShouldMoveInForKill::Run() {
+Action* ShouldMoveInForKill::run() {
 
 	//can't move in for a kill if we are suppressing an enemy
 	if (Tree->Character->HasAction == true) {
 
-		if (dynamic_cast<SuppressAction*>(Tree->Character->CurrentAct->FrontAction())) {
+		if (dynamic_cast<SuppressAction*>(Tree->Character->CurrentAct->frontAction())) {
 
-			Tree->Log("Can't move in for kill while suppressing");
-			return FalseBranch->Run();
+			Tree->log("Can't move in for kill while suppressing");
+			return FalseBranch->run();
 		}
 	}
 
 	//if the character doesn't have enough aggression to meet the requirement...
 	if (Tree->Character->Aggression < _minAggression) {
 
-		Tree->Log("Not aggressive enough for assault");
-		return FalseBranch->Run();
+		Tree->log("Not aggressive enough for assault");
+		return FalseBranch->run();
 	}
 
 	//filter out enemies that aren't suppressed and within range
-	vector<AICharacter*> suppressedEnemies = Tree->CharTeam->GetVisibleEnemies();
+	vector<AICharacter*> suppressedEnemies = Tree->CharTeam->getVisibleEnemies();
 
 	for (int i = 0; i < (int)suppressedEnemies.size(); i++) {
 
@@ -49,17 +49,17 @@ Action* ShouldMoveInForKill::Run() {
 	//if there are no suppressed enemies we can engage, then no enemies to assault
 	if (suppressedEnemies.size() == 0) {
 
-		Tree->Log("No suppressed enemies to assault");
-		return FalseBranch->Run();
+		Tree->log("No suppressed enemies to assault");
+		return FalseBranch->run();
 	}
 
 	//check to see if the character is already engaging someone else well
 	for (int i = 0; i < (int)Tree->Character->VisibleEnemies.size(); i++) {
 
-		if (Tree->Character->Weapon->GetAccuracyToCharIncCover(Tree->Character->VisibleEnemies[i]) >= 75) {
+		if (Tree->Character->Weapon->getAccuracyToCharIncCover(Tree->Character->VisibleEnemies[i]) >= 75) {
 
-			Tree->Log("Already engaging a good target");
-			return FalseBranch->Run();
+			Tree->log("Already engaging a good target");
+			return FalseBranch->run();
 		}
 	}
 
@@ -67,13 +67,13 @@ Action* ShouldMoveInForKill::Run() {
 	//if we do have candidates to assault, see if we aren't already in a good spot for engaging them
 	for (int i = 0; i < (int)suppressedEnemies.size(); i++) {
 
-		if (Tree->Character->Weapon->GetAccuracyToCharIncCover(suppressedEnemies[i]) >= 75) {
+		if (Tree->Character->Weapon->getAccuracyToCharIncCover(suppressedEnemies[i]) >= 75) {
 
-			Tree->Log("Already in good assaulting position");
-			return FalseBranch->Run();
+			Tree->log("Already in good assaulting position");
+			return FalseBranch->run();
 		}
 	}
 
-	Tree->Log("Enemies vunerable to assault");
-	return TrueBranch->Run();
+	Tree->log("Enemies vunerable to assault");
+	return TrueBranch->run();
 }

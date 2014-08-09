@@ -10,11 +10,11 @@ class CoveringFire : public Overwatch {
 public:
 	CoveringFire::CoveringFire(AICharacter * actor, int priority);
 
-	std::string ToString();
+	std::string toString();
 
 protected:
-	AICharacter* ChooseTarget();
-	void EngageTarget(AICharacter * target);
+	AICharacter* chooseTarget();
+	void engageTarget(AICharacter * target);
 };
 
 #endif

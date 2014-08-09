@@ -19,26 +19,26 @@ private:
 	//===================================================
 public:
 	Patrol::Patrol(AICharacter * character, int priority);
-	virtual void Act(float dt, AICharacter * sender);
-	virtual void Cancel();
-	virtual void HardCancel();
-	virtual bool CanInterrupt();
-	virtual bool CanDoBoth(Action * other);
-	bool IsSameKind(Action * other);
-	bool ShouldGiveWayTo(Action *other);
+	virtual void act(float dt, AICharacter * sender);
+	virtual void cancel();
+	virtual void hardCancel();
+	virtual bool canInterrupt();
+	virtual bool canDoBoth(Action * other);
+	bool isSameKind(Action * other);
+	bool shouldGiveWayTo(Action *other);
 
-	virtual std::string ToString();
+	virtual std::string toString();
 
 protected:
-	virtual void Finished();
+	virtual void finished();
 
-	virtual vector<Tile*> GetBestLOSCandidatesFor(AICharacter * character);
-	Tile* PickBestLOSTileFor(AICharacter * character);
+	virtual vector<Tile*> getBestLOSCandidatesFor(AICharacter * character);
+	Tile* pickBestLOSTileFor(AICharacter * character);
 
 	virtual void MoverAct(float dt, AICharacter * sender);
-	virtual void MoverFinished();
+	virtual void moverFinished();
 
-	virtual void Setup();
+	virtual void setup();
 };
 
 #endif

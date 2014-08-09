@@ -39,7 +39,7 @@ public:
 public:
 	//Sprite2D::Sprite2D();
 	Sprite2D::Sprite2D(TGATexture texture);
-	virtual void Draw();
+	virtual void draw();
 };
 
 #endif

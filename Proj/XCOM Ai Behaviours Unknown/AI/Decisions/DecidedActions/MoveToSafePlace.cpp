@@ -12,11 +12,11 @@ MoveToSafePlace::MoveToSafePlace(DecisionTree * tree)
 }
 
 //Character should fall back to the safest place they can
-Action* MoveToSafePlace::Run() {
+Action* MoveToSafePlace::run() {
 
 	//flood the map of all the places we can move to within a resonable large range
 	vector<Tile*> fallbackPositions;
-	PathFinding::FloodMap(fallbackPositions, Tree->Character->CurrentTile, Tree->Character->Speed * 5);
+	PathFinding::floodMap(fallbackPositions, Tree->Character->CurrentTile, Tree->Character->Speed * 5);
 
 	//remove any possible fall back positions that are occupied by other characters
 	for (int i = 0; i < (int)fallbackPositions.size(); i++) {
@@ -29,8 +29,8 @@ Action* MoveToSafePlace::Run() {
 	}
 
 	//get the assumed enemy infulence in the level
-	vector<InfulenceData> enemyInfulence = Tree->CharTeam->GetAssumedEnemyInfulencedTiles();
-	vector<AICharacter*> enemies = Tree->CharTeam->GetVisibleEnemies();
+	vector<InfulenceData> enemyInfulence = Tree->CharTeam->getAssumedEnemyInfulencedTiles();
+	vector<AICharacter*> enemies = Tree->CharTeam->getVisibleEnemies();
 
 	for (int i = 0; i < (int)fallbackPositions.size(); i++) {
 
@@ -78,6 +78,6 @@ Action* MoveToSafePlace::Run() {
 	//create a priority based off the lack of aggression and boldness, averaged from 0 to 10
 	int priority = (20 - (Tree->Character->Aggression + Tree->Character->Boldness)) / 2;
 
-	Tree->Log("Moving to safe position");
+	Tree->log("Moving to safe position");
 	return new TacticalMove(Tree->Character, bestTile, priority);
 }

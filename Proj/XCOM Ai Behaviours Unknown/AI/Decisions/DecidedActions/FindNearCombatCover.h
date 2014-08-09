@@ -11,10 +11,10 @@ private:
 
 public:
 	FindNearCombatCover::FindNearCombatCover(DecisionTree * tree, int depth);
-	Action* Run();
+	Action* run();
 
 private:
-	void RemoveVectorElement(vector<Tile*> &theVector, int &loopIndex);
+	void removeVectorElement(vector<Tile*> &theVector, int &loopIndex);
 };
 
 #endif

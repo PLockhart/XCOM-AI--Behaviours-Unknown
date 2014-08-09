@@ -374,8 +374,8 @@
 	class Rotations {
 
 	public:
-		static void ClampDegreeRotation(float &rotation);
-		static bool RotationsSimilair(float rot1, float rot2, float leeway);
+		static void clampDegreeRotation(float &rotation);
+		static bool rotationsSimilair(float rot1, float rot2, float leeway);
 		static int RotDir(float startRot, float targetRot);
 	};
 

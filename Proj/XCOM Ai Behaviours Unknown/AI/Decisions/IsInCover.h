@@ -11,7 +11,7 @@ class IsInCover : public Decision {
 	//===================================================
 public:
 	IsInCover::IsInCover(DecisionTree * tree);
-	Action* Run();
+	Action* run();
 };
 
 #endif

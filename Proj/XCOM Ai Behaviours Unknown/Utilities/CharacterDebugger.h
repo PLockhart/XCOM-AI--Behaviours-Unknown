@@ -18,12 +18,12 @@ private:
 	//Methods
 	//===================================================
 public:
-	void AddCharacter(Character * newChar);
-	void Draw();
+	void addCharacter(Character * newChar);
+	void draw();
 
 private:
-	void DrawString(string input);
-	string CombineStrAndNum(string input, int num);
+	void drawString(string input);
+	string combineStrAndNum(string input, int num);
 };
 
 #endif

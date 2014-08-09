@@ -11,7 +11,7 @@
 Level::Level(char * fileName) {
 
 	Description = "";
-	ParseLevel(fileName);
+	parseLevel(fileName);
 }
 
 Level::~Level() {
@@ -34,7 +34,7 @@ Level::~Level() {
 }
 
 //Parses a level blue print and creates a tile grid from it
-void Level::ParseLevel(char * fileName) {
+void Level::parseLevel(char * fileName) {
 
 	//load in the file
 	std::ifstream levelData;
@@ -138,19 +138,19 @@ void Level::ParseLevel(char * fileName) {
 }
 
 //Returns the tile that a specific spawn index has been assigned
-Tile* Level::GetSpawnTile(int spawnIndex) {
+Tile* Level::getSpawnTile(int spawnIndex) {
 
 	return _spawnPositions[spawnIndex];
 }
 
 //returns the number of spawn positions there are in the level
-int Level::GetNumSpawnPos() {
+int Level::getNumSpawnPos() {
 
 	return (int)_spawnPositions.size();
 }
 
 //Returns a vector of LOS data for a specific tile
-std::vector<Tile*> Level::GetLOSForTile(Tile * target) {
+std::vector<Tile*> Level::getLOSForTile(Tile * target) {
 
 	return _losData[target->Y][target->X];
 }
@@ -159,7 +159,7 @@ std::vector<Tile*> Level::GetLOSForTile(Tile * target) {
 //The image to represent a open space
 //the image to represent low cover
 //the image to represent high cover
-void Level::LoadContent(TGATexture blankSpace, TGATexture lowCover, TGATexture highCover) {
+void Level::loadContent(TGATexture blankSpace, TGATexture lowCover, TGATexture highCover) {
 
 	//loop through all of the tiles and load the appropiate texture for it
 	for (int i = 0; i < TilesTall; i++) {
@@ -170,15 +170,15 @@ void Level::LoadContent(TGATexture blankSpace, TGATexture lowCover, TGATexture h
 			switch (loopedTile->CoverType) {
 
 				case kLow:
-					loopedTile->LoadContent(new Sprite2D(lowCover));
+					loopedTile->loadContent(new Sprite2D(lowCover));
 					break;
 
 				case kHigh:
-					loopedTile->LoadContent(new Sprite2D(highCover));
+					loopedTile->loadContent(new Sprite2D(highCover));
 					break;
 
 				default:
-					loopedTile->LoadContent(new Sprite2D(blankSpace));
+					loopedTile->loadContent(new Sprite2D(blankSpace));
 					break;
 			}
 		}
@@ -194,18 +194,18 @@ void Level::LoadContent(TGATexture blankSpace, TGATexture lowCover, TGATexture h
 		for (int j = 0; j < TilesWide; j++) {
 
 			Tile * loopedTile = TileGrid[i][j];
-			Raycast::VisibleTiles(_losData[i][j], loopedTile);
+			Raycast::visibleTiles(_losData[i][j], loopedTile);
 		}
 	}
 }
 
 //Draws the level's tiles
-void Level::Draw() {
+void Level::draw() {
 
 	for (int i = 0; i < TilesTall; i++) {
 		for (int j = 0; j < TilesWide; j++) {
 
-			TileGrid[i][j]->Draw();
+			TileGrid[i][j]->draw();
 		}
 	}
 

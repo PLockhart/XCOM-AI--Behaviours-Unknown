@@ -8,7 +8,7 @@ class MoveToEngage : public DecisionAction {
 
 public:
 	MoveToEngage::MoveToEngage(DecisionTree * tree);
-	Action* Run();
+	Action* run();
 };
 
 #endif

@@ -12,10 +12,10 @@ class Texture {
 
 public:
 	Texture::Texture();
-	static TGATexture LoadTexture(char * fileName);
+	static TGATexture loadTexture(char * fileName);
 
 private:
-	static TGATexture LoadTGAFile(char * filename);
+	static TGATexture loadTGAFile(char * filename);
 	static bool hasEnding (std::string const &fullString, std::string const &ending);
 };
 

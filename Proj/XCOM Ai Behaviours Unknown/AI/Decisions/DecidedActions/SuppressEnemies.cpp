@@ -13,33 +13,33 @@ SuppressEnemies::SuppressEnemies(DecisionTree * tree)
 
 }
 
-Action* SuppressEnemies::Run() {
+Action* SuppressEnemies::run() {
 
-	vector<AICharacter*> teammates = Tree->CharTeam->GetTeammatesOf(Tree->Character);
+	vector<AICharacter*> teammates = Tree->CharTeam->getTeammatesOf(Tree->Character);
 
 	//if the weapon we are holding can't suppress, then false branch
-	if (Tree->Character->Weapon->CanSuppress() == false) {
+	if (Tree->Character->Weapon->canSuppress() == false) {
 
-		Tree->Log("Can't suppress");
-		return FalseBranch->Run();
+		Tree->log("Can't suppress");
+		return FalseBranch->run();
 	}
 
 	//if we have no teammates to suppress for, then don't bother
 	else if (teammates.size() == 0) {
 
-		Tree->Log("No teammates to supress for");
-		return FalseBranch->Run();
+		Tree->log("No teammates to supress for");
+		return FalseBranch->run();
 	}
 	
 	//if we are on our own, we have no reason to suppress
 	else if (Tree->Character->Comradery == 0) {
 
-		Tree->Log("Doesn't care for teammates");
-		return FalseBranch->Run();
+		Tree->log("Doesn't care for teammates");
+		return FalseBranch->run();
 	}
 
 	//get the total enemy threat to this tree's character
-	float ourEnemyThreat = GetAssumedInfulenceForTile(Tree->Character->CurrentTile);
+	float ourEnemyThreat = getAssumedInfulenceForTile(Tree->Character->CurrentTile);
 
 	//the enemies that this team can see
 	vector<AICharacter*> enemies = Tree->Character->VisibleEnemies;
@@ -56,10 +56,10 @@ Action* SuppressEnemies::Run() {
 		//loop against all the enemies we can personally see (ie ones we can supress)
 		for (int j = 0; j < (int)enemies.size(); j++) {
 
-			if (Raycast::CastRay(enemies[j]->CurrentTile, teammates[i]->CurrentTile) == true) {
+			if (Raycast::castRay(enemies[j]->CurrentTile, teammates[i]->CurrentTile) == true) {
 
 				//accumulate all of their threats to the character
-				loopedAllyThreat += enemies[j]->Weapon->GetAccuracyToCharIncCover(teammates[i]) * enemies[j]->Weapon->BulletsPerShot;
+				loopedAllyThreat += enemies[j]->Weapon->getAccuracyToCharIncCover(teammates[i]) * enemies[j]->Weapon->BulletsPerShot;
 			}
 		}
 
@@ -73,10 +73,10 @@ Action* SuppressEnemies::Run() {
 
 	//if the tree's character decides it is more threanted that the ally, return false
 	if (ourEnemyThreat * Tree->Character->Aggression >= highestAllyThreat * Tree->Character->Comradery)
-		return FalseBranch->Run();
+		return FalseBranch->run();
 
 	//the enemies that are attacking this tree's character
-	vector<AttackData> ourAttackers = Tree->Character->GetAttackers();
+	vector<AttackData> ourAttackers = Tree->Character->getAttackers();
 
 	//remove any enemies that are suppressed or are suppressing us
 	for (int i = 0; i < (int)enemies.size(); i++) {
@@ -109,8 +109,8 @@ Action* SuppressEnemies::Run() {
 		}
 
 		//remove any enemies that cannot be seen/engaged
-		if (Tree->Character->Weapon->IsInRange(enemies[i]->Position) == false ||
-			Raycast::CastRay(Tree->Character->CurrentTile, enemies[i]->CurrentTile) == false) {
+		if (Tree->Character->Weapon->isInRange(enemies[i]->Position) == false ||
+			Raycast::castRay(Tree->Character->CurrentTile, enemies[i]->CurrentTile) == false) {
 
 			enemies.erase(enemies.begin() + i);
 			i--;
@@ -121,8 +121,8 @@ Action* SuppressEnemies::Run() {
 	//if there are no more enemies we can target, return false
 	if (enemies.size() == 0) {
 
-		Tree->Log("No worthy candidates for suppression");
-		return FalseBranch->Run();
+		Tree->log("No worthy candidates for suppression");
+		return FalseBranch->run();
 	}
 
 	//find the most threatening enemy
@@ -136,9 +136,9 @@ Action* SuppressEnemies::Run() {
 		for (int j = 0; j < (int)teammates.size(); j++) {
 
 			//if the enemy can engage the teammate, then check its threat against the teammate
-			if (Raycast::CastRay(enemies[i]->CurrentTile, teammates[j]->CurrentTile) == true) {
+			if (Raycast::castRay(enemies[i]->CurrentTile, teammates[j]->CurrentTile) == true) {
 
-				float enemyThreat = enemies[i]->Weapon->GetAccuracyToCharIncCover(teammates[j]) * enemies[i]->Weapon->BulletsPerShot;
+				float enemyThreat = enemies[i]->Weapon->getAccuracyToCharIncCover(teammates[j]) * enemies[i]->Weapon->BulletsPerShot;
 
 				//if the current enemy is more threatening than the previously worked out enemy, then set the new most threatening enemy
 				if (enemyThreat > highestThreat) {
@@ -150,14 +150,14 @@ Action* SuppressEnemies::Run() {
 		}
 	}
 
-	Tree->Log("Suppressing");
+	Tree->log("Suppressing");
 	return new SuppressAction(Tree->Character, mostThreateningEnemy, Tree->Character->Aggression);
 }
 
 //Returns the infulence from enemy teams on the specified tile. Always from this tree's character's perspective
-float SuppressEnemies::GetAssumedInfulenceForTile(Tile * theTile) {
+float SuppressEnemies::getAssumedInfulenceForTile(Tile * theTile) {
 
-	vector<InfulenceData> enemyAssumedInfulence = Tree->CharTeam->GetAssumedEnemyInfulencedTiles();
+	vector<InfulenceData> enemyAssumedInfulence = Tree->CharTeam->getAssumedEnemyInfulencedTiles();
 
 	//work out our threat from enemies by find the tile in the assumed enemy infulence that the character is on
 	for (int i = 0; i < (int)enemyAssumedInfulence.size(); i++) {

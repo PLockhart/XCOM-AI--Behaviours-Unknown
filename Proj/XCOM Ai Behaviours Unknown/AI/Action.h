@@ -28,23 +28,23 @@ protected:
 	//===================================================
 public:
 	Action::Action(int priority);
-	virtual void Act(float dt, AICharacter * sender);
-	virtual bool CanInterrupt() = 0;
-	virtual bool CanDoBoth(Action * other) = 0;
-	virtual void Cancel();
-	virtual void HardCancel();	//Immediately cancels, only to be used in the event of character death
-	virtual void Deleted();	//called before an action is deleted
-	bool IsActionComplete();
-	virtual Action * FrontAction();
+	virtual void act(float dt, AICharacter * sender);
+	virtual bool canInterrupt() = 0;
+	virtual bool canDoBoth(Action * other) = 0;
+	virtual void cancel();
+	virtual void hardCancel();	//Immediately cancels, only to be used in the event of character death
+	virtual void deleted();	//called before an action is deleted
+	bool isActionComplete();
+	virtual Action * frontAction();
 
-	virtual bool IsSameKind(Action * other) = 0;
-	virtual bool ShouldGiveWayTo(Action *other) = 0;
+	virtual bool isSameKind(Action * other) = 0;
+	virtual bool shouldGiveWayTo(Action *other) = 0;
 
-	virtual std::string ToString() = 0;
+	virtual std::string toString() = 0;
 
 protected:
-	virtual void Setup() = 0;
-	virtual void Finished();	//Is triggered when the action has been completed
+	virtual void setup() = 0;
+	virtual void finished();	//Is triggered when the action has been completed
 };
 
 #endif

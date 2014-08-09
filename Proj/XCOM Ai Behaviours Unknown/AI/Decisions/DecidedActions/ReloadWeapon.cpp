@@ -9,8 +9,8 @@ ReloadWeapon::ReloadWeapon(DecisionTree * tree)
 }
 
 //Character should reload their weapon
-Action* ReloadWeapon::Run() {
+Action* ReloadWeapon::run() {
 
-	Tree->Log("Should reload");
+	Tree->log("Should reload");
 	return new Reload(Tree->Character, 10);
 }

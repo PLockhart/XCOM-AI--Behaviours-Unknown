@@ -8,7 +8,7 @@ class EngageEnemies : public DecisionAction {
 
 public:
 	EngageEnemies::EngageEnemies(DecisionTree * tree);
-	Action* Run();
+	Action* run();
 };
 
 #endif

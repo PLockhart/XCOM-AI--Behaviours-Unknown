@@ -12,10 +12,10 @@ class SuppressEnemies : public DecisionAction {
 	//===================================================
 public:
 	SuppressEnemies::SuppressEnemies(DecisionTree * tree);
-	Action* Run();
+	Action* run();
 
 private:
-	float GetAssumedInfulenceForTile(Tile * theTile);
+	float getAssumedInfulenceForTile(Tile * theTile);
 };
 
 #endif

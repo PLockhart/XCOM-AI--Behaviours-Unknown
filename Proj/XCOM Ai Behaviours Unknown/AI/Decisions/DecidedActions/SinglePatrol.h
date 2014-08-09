@@ -7,7 +7,7 @@ class SinglePatrol : public DecisionAction {
 
 public:
 	SinglePatrol::SinglePatrol(DecisionTree * tree);
-	Action* Run();
+	Action* run();
 };
 
 #endif

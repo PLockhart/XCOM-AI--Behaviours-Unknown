@@ -27,14 +27,14 @@ private:
 public:
 	Level::Level(char * fileName);
 	Level::~Level();
-	Tile* GetSpawnTile(int spawnIndex);
-	int GetNumSpawnPos();
-	std::vector<Tile*> GetLOSForTile(Tile * target);
-	void LoadContent(TGATexture blankSpace, TGATexture lowCover, TGATexture highCover);
-	void Draw();
+	Tile* getSpawnTile(int spawnIndex);
+	int getNumSpawnPos();
+	std::vector<Tile*> getLOSForTile(Tile * target);
+	void loadContent(TGATexture blankSpace, TGATexture lowCover, TGATexture highCover);
+	void draw();
 
 protected:
-	void ParseLevel(char * fileName);
+	void parseLevel(char * fileName);
 };
 
 #endif

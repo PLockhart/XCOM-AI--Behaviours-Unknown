@@ -5,6 +5,9 @@
 #include "DecisionTree.h"
 #include "ActionSequence.h"
 
+//length of time an enemy's tile position needs to be stored for before it is deemed too old to be counted anymore
+const float CHAR_TILE_HISTORY_TIME = 10;
+
 //Base class for an AI character
 AICharacter::AICharacter() { 
 
@@ -25,40 +28,40 @@ AICharacter::AICharacter() {
 }
 
 //Registers the weapon being held and adjusts the ai character's stats
-void AICharacter::RegisterWeapon(BaseWeapon * weapon) {
+void AICharacter::registerWeapon(BaseWeapon * weapon) {
 
 	Weapon = weapon;
-	weapon->ModifyPlayerStats(this);
+	weapon->modifyPlayerStats(this);
 }
 
 //Registers this AI character to a given team
-void AICharacter::RegisterTeam(Team * theTeam) {
+void AICharacter::registerTeam(Team * theTeam) {
 
 	ParentTeam = theTeam;
-	theTeam->AddTeamMember(this);
+	theTeam->addTeamMember(this);
 }
 
 //Updates the player, its running actions, and its tile position
-void AICharacter::Update(float dt) {
+void AICharacter::update(float dt) {
 
 	//Reset the trait variables
 	Boldness = _sBoldness;
 	Aggression = _sAggression;
 	Comradery = _sComradery;
 
-	UpdateChildTraits();
-	Weapon->ModifyPlayerStats(this);
+	updateChildTraits();
+	Weapon->modifyPlayerStats(this);
 
 	//update what tile position the player is said to be on
-	UpdateTilePosition();
-	UpdateTileHistory(dt);
-	UpdateInfulence();
+	updateTilePosition();
+	updateTileHistory(dt);
+	updateInfulence();
 
 	//update the weapon's cooldowns etc
-	Weapon->Update(dt);
+	Weapon->update(dt);
 
 	//update the characters current action or reanalyse its situation
-	UpdateActions(dt);
+	updateActions(dt);
 
 	//reset modifiers
 	AccuracyModifier = 1;
@@ -66,13 +69,13 @@ void AICharacter::Update(float dt) {
 }
 
 //Updates the characters actions and decision making
-void AICharacter::UpdateActions(float dt) {
+void AICharacter::updateActions(float dt) {
 
 	if (_reactionCountdown > 0) {
 
 		//if there is a close enemy to this character, increase their reaction time to give more updated actions
 		float modifiedDt = dt;
-		vector<AICharacter*> enemies = ParentTeam->GetVisibleEnemies();
+		vector<AICharacter*> enemies = ParentTeam->getVisibleEnemies();
 		for (int i = 0; i < (int)enemies.size(); i++) {
 
 			if (enemies[i]->Position.distance(Position) <= 160) {
@@ -93,13 +96,13 @@ void AICharacter::UpdateActions(float dt) {
 	if (HasAction == true) {
 
 		//check if the action isn't finished yet
-		if (CurrentAct->IsActionComplete() == false)
-			CurrentAct->Act(dt, this);
+		if (CurrentAct->isActionComplete() == false)
+			CurrentAct->act(dt, this);
 
 		//see if the action has just been finished
-		if (CurrentAct->IsActionComplete() == true) {
+		if (CurrentAct->isActionComplete() == true) {
 
-			CurrentAct->Deleted();
+			CurrentAct->deleted();
 			HasAction = false;
 			delete CurrentAct;
 		}
@@ -109,26 +112,26 @@ void AICharacter::UpdateActions(float dt) {
 	if (HasAction == false || _reactionCountdown <= 0) {
 
 		//get the new action
-		Action * decidedAction = TheDecisionTree->Run();
+		Action * decidedAction = TheDecisionTree->run();
 
 		//reset the countdown
 		_reactionCountdown = ReactionTime;
 
 		//if it had no action, just set it as the current
 		if (HasAction == false)
-			SetAction(decidedAction);
+			setAction(decidedAction);
 
-		else if (CurrentAct->State != kCancelling && CurrentAct->CanInterrupt() == true) {
+		else if (CurrentAct->State != kCancelling && CurrentAct->canInterrupt() == true) {
 
 			//see if the new action should be ran over the previous action
-			if (CurrentAct->ShouldGiveWayTo(decidedAction) == true) {
+			if (CurrentAct->shouldGiveWayTo(decidedAction) == true) {
 
 				//add the current action in a sequence while cancelling it
-				CurrentAct->Cancel();
+				CurrentAct->cancel();
 
 				//if the action was able to finish immediately, set the new action
-				if (CurrentAct->IsActionComplete() == true)
-					SetAction(decidedAction);
+				if (CurrentAct->isActionComplete() == true)
+					setAction(decidedAction);
 			}
 		}
 	}
@@ -136,22 +139,22 @@ void AICharacter::UpdateActions(float dt) {
 
 //Updates what tile the current player is inteprted to be on,
 //and moves them to the center of the tile if the character has no movement set
-void AICharacter::UpdateTilePosition() {
+void AICharacter::updateTilePosition() {
 
 	//update the tiles that the character is on
 	if (CurrentTile != DestinationTile) {
 
 		//if the character is closer to the destination than they are to the current tile, update the current tile var
 		if (Position.distance(CurrentTile->Position) > Position.distance(DestinationTile->Position))
-			MovedToTile(DestinationTile);
+			movedToTile(DestinationTile);
 	}
 }
 
 //Updates the tile history of this character, removing any tiles that are beyond a threshold
-void AICharacter::UpdateTileHistory(float dt) {
+void AICharacter::updateTileHistory(float dt) {
 
-	//length of tile a tile needs to be stored for before it is deemed too old to be counted anymore
-	int threshold = 10;
+	//length of time a tile needs to be stored for before it is deemed too old to be counted anymore
+	int threshold = CHAR_TILE_HISTORY_TIME;
 
 	//firstly increase all the time's for the previously recorded history times, removing old ones
 	for (int hist = 0; hist < (int)_history.size(); hist++) { 
@@ -188,16 +191,16 @@ void AICharacter::UpdateTileHistory(float dt) {
 }
 
 //Method for when a character has moved to a different tile
-void AICharacter::MovedToTile(Tile * newTile) {
+void AICharacter::movedToTile(Tile * newTile) {
 
 	CurrentTile = newTile;
 }
 
 //Updates the infulence
-void AICharacter::UpdateInfulence() {
+void AICharacter::updateInfulence() {
 
 	//work out the new infulence map
-	vector<Tile*> losTiles = CurrentTile->GetLosTiles();
+	vector<Tile*> losTiles = CurrentTile->getLosTiles();
 	InfulencedTiles.clear();
 
 	for (int i = 0; i < (int)losTiles.size(); i++) {
@@ -205,9 +208,9 @@ void AICharacter::UpdateInfulence() {
 		Tile * loopedTile = losTiles[i];
 
 		//cap the accuracy to 100
-		float accuracy = Weapon->GetAccuracyToTarget(loopedTile->Position);
+		float accuracy = Weapon->getAccuracyToTarget(loopedTile->Position);
 
-		if (loopedTile->IsInCoverFrom(Position))
+		if (loopedTile->isInCoverFrom(Position))
 			accuracy /= Weapon->CoverPenalty;
 
 		if (accuracy > 100)
@@ -222,13 +225,13 @@ void AICharacter::UpdateInfulence() {
 }
 
 //Method that returns true if this character is in cover from an attack originating from a position
-bool AICharacter::IsInCoverFromAttack(Vector3 attackOrigin) {
+bool AICharacter::isInCoverFromAttack(Vector3 attackOrigin) {
 
-	return CurrentTile->IsInCoverFrom(attackOrigin);
+	return CurrentTile->isInCoverFrom(attackOrigin);
 }
 
 //Sets the AI to start performing an action.
-void AICharacter::SetAction(Action * action) {
+void AICharacter::setAction(Action * action) {
 
 	HasAction = true;
 	CurrentAct = action;
@@ -238,7 +241,7 @@ void AICharacter::SetAction(Action * action) {
 }
 
 //Adds an attacker to the attackers vector
-void AICharacter::RegisterAttack(AttackData data) {
+void AICharacter::registerAttack(AttackData data) {
 
 	_attackers.push_back(data);
 
@@ -247,7 +250,7 @@ void AICharacter::RegisterAttack(AttackData data) {
 }
 
 //Removes an attacker from the attackers vector
-void AICharacter::UnRegisterAttacker(AICharacter * attacker) {
+void AICharacter::unRegisterAttacker(AICharacter * attacker) {
 
 	for (int i = 0; i < (int)_attackers.size(); i++) {
 
@@ -281,71 +284,71 @@ AICharacter::~AICharacter() {
 
 	if (HasAction == true) {
 
-		CurrentAct->HardCancel();
+		CurrentAct->hardCancel();
 		delete CurrentAct;
 	}
 }
 
 //getters and setters for AI surroundings
 //============================================================
-vector<AttackData> AICharacter::GetAttackers() {
+vector<AttackData> AICharacter::getAttackers() {
 
 	return _attackers;
 }
-vector<TileHistory> AICharacter::GetTileHistory() {
+vector<TileHistory> AICharacter::getTileHistory() {
 
 	return _history;
 }
 
 //getters and setters for AI variables
 //============================================================
-void AICharacter::SetBaseAggression(int agg) {
+void AICharacter::setBaseAggression(int agg) {
 
 	_sAggression = agg;
-	KeepTraitToBounds(_sAggression, 0, 10);
+	keepTraitToBounds(_sAggression, 0, 10);
 
 	//adjust the current trait if all of a sudden the character is more than it should be
 	if (Aggression > _sAggression)
 		Aggression = _sAggression;
 }
 
-int AICharacter::GetBaseAggression() {
+int AICharacter::getBaseAggression() {
 
 	return _sAggression;
 }
 
-void AICharacter::SetBaseBoldness(int bold) {
+void AICharacter::setBaseBoldness(int bold) {
 
 	_sBoldness = bold;
-	KeepTraitToBounds(_sBoldness, 0, 10);
+	keepTraitToBounds(_sBoldness, 0, 10);
 
 	//adjust the current trait if all of a sudden the character is more than it should be
 	if (Boldness > _sBoldness)
 		Boldness = _sBoldness;
 }
 
-int AICharacter::GetBaseBoldness() {
+int AICharacter::getBaseBoldness() {
 
 	return _sBoldness;
 }
 
-void AICharacter::SetBaseComradery(int comradery) {
+void AICharacter::setBaseComradery(int comradery) {
 
 	_sComradery = comradery;
-	KeepTraitToBounds(_sComradery, 0, 10);
+	keepTraitToBounds(_sComradery, 0, 10);
 
 	//adjust the current trait if all of a sudden the character is more than it should be
 	if (Comradery > _sComradery)
 		Comradery = _sComradery;
 }
 
-int AICharacter::GetBaseComradery() {
+int AICharacter::getBaseComradery() {
 
 	return _sComradery;
 }
 //============================================================
 
-void AICharacter::KeepTraitToBounds(int &trait, int lowerBound, int upperBound) {
+void AICharacter::keepTraitToBounds(int &trait, int lowerBound, int upperBound) {
 
 	if (trait < lowerBound)
 		trait = lowerBound;

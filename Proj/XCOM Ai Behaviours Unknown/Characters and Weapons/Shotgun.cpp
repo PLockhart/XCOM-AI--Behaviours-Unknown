@@ -2,6 +2,9 @@
 
 #include "../AI/AICharacter.h"
 
+const int SHOTGUN_AGGRESSION_BONUS = 4;
+const int SHOTFGUN_BOLDNESS_BONUS = 2;
+
 Shotgun::Shotgun() 
 	: BaseWeapon() {
 
@@ -16,19 +19,19 @@ Shotgun::Shotgun()
 }
 
 //Override of base weapon. Shotguns cannot suppress
-bool Shotgun::CanSuppress() {
+bool Shotgun::canSuppress() {
 
 	return false;
 }
 
-void Shotgun::ModifyPlayerStats(AICharacter * character) {
+void Shotgun::modifyPlayerStats(AICharacter * character) {
 
 	//a character weilding a shotgun is more aggressive and slightly more bold
-	character->Aggression = min(character->Aggression + 4, 10);
-	character->Boldness = min(character->Boldness + 2, 10);
+	character->Aggression = min(character->Aggression + SHOTGUN_AGGRESSION_BONUS, 10);
+	character->Boldness = min(character->Boldness + SHOTFGUN_BOLDNESS_BONUS, 10);
 }
 
-std::string Shotgun::ToString() {
+std::string Shotgun::toString() {
 
 	return "Shotgun";
 }

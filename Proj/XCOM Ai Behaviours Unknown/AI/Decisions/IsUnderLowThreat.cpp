@@ -15,7 +15,7 @@ IsUnderLowThreat::IsUnderLowThreat(DecisionTree * tree, float threatConstant)
 }
 
 //checks to see if the actor has an acceptable amount of ammo
-Action* IsUnderLowThreat::Run() {
+Action* IsUnderLowThreat::run() {
 
 	//get all the visible enemies
 	vector<AICharacter*> visibleEnemies = Tree->Character->VisibleEnemies;
@@ -31,10 +31,10 @@ Action* IsUnderLowThreat::Run() {
 		AICharacter * loopedEnemy = visibleEnemies[i];
 
 		//check to see if we are in cover from that enemy
-		if (Tree->Character->IsInCoverFromAttack(loopedEnemy->Position) == false) {
+		if (Tree->Character->isInCoverFromAttack(loopedEnemy->Position) == false) {
 
 			//check to see if they can engage us
-			float accuracyToChar = loopedEnemy->Weapon->GetAccuracyToCharIncCover(Tree->Character);
+			float accuracyToChar = loopedEnemy->Weapon->getAccuracyToCharIncCover(Tree->Character);
 			if (accuracyToChar > 0) {
 
 				threateningEnemies++;
@@ -51,7 +51,7 @@ Action* IsUnderLowThreat::Run() {
 		AICharacter * loopedEnemy = visibleEnemies[i];
 
 		//if we have > 0 accuracy to them, then we can threaten them
-		float accuracyToChar = Tree->Character->Weapon->GetAccuracyToCharIncCover(loopedEnemy);
+		float accuracyToChar = Tree->Character->Weapon->getAccuracyToCharIncCover(loopedEnemy);
 		if (accuracyToChar > 0) {
 
 			//work out our threat to them
@@ -65,25 +65,25 @@ Action* IsUnderLowThreat::Run() {
 
 	if (accThreat == 0) {
 
-		Tree->Log("Protected from enemies");
-		return TrueBranch->Run();
+		Tree->log("Protected from enemies");
+		return TrueBranch->run();
 	}
 
 	//reduce the enemy threat if they are a lone enemy and we have teammates left
-	if (Tree->CharTeam->GetTrackedEnemies().size() == 1 && Tree->CharTeam->GetTeammatesOf(Tree->Character).size() > 0)
+	if (Tree->CharTeam->getTrackedEnemies().size() == 1 && Tree->CharTeam->getTeammatesOf(Tree->Character).size() > 0)
 		accThreat /= 100;
 
 	//weight the characters boldness and the number of flankers against if we are more of a threat than they are to us
 	//if greater than the threat, then we are in good cover as far as the character is concerned
 	if (_threatConstant + Tree->Character->Boldness * 10 > accThreat - ourHighestThreat) {
 
-		Tree->Log("Doesn't feel too threatened");
-		return TrueBranch->Run();
+		Tree->log("Doesn't feel too threatened");
+		return TrueBranch->run();
 	}
 
 	else {
 		
-		Tree->Log("Feels threatened");
-		return FalseBranch->Run();
+		Tree->log("Feels threatened");
+		return FalseBranch->run();
 	}
 }

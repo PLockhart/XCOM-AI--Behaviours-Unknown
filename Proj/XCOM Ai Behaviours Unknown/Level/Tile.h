@@ -44,19 +44,19 @@ public:
 	Tile::Tile();
 	Tile::Tile(CoverTypes type, int x, int y, Level * parent);
 	Tile::~Tile();
-	std::vector<Tile*> GetLosTiles();
+	std::vector<Tile*> getLosTiles();
 
-	bool IsInCoverAtAngle(float angle);
-	bool IsInCoverFrom(Vector3 attackOrigin);
+	bool isInCoverAtAngle(float angle);
+	bool isInCoverFrom(Vector3 attackOrigin);
 
-	void LoadContent(Sprite2D * sprite);
-	void Draw();
+	void loadContent(Sprite2D * sprite);
+	void draw();
 
 	//path finding methods
-	void AssignCosts(int g, int h);
-	void SetPathfindingParent(Tile * parent);
+	void assignCosts(int g, int h);
+	void setPathfindingParent(Tile * parent);
 	static bool IsLower(Tile * i, Tile * j);
-	void ResetTile();
+	void resetTile();
 };
 
 #endif

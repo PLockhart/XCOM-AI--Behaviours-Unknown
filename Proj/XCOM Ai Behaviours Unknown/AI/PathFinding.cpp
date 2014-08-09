@@ -8,7 +8,7 @@
 
 //Floods the map around the source tile, returning what tiles are within range of a certain amount of moves
 //the max moves variable is assumed the number of standard moves, where a standard length of a connection is 10
-void PathFinding::FloodMap(vector<Tile*> &avaliableTiles, Tile * start, int maxMoves) {
+void PathFinding::floodMap(vector<Tile*> &avaliableTiles, Tile * start, int maxMoves) {
 
 	//work out the max costs for the flooding
 	int maxCost = maxMoves * 10;
@@ -49,7 +49,7 @@ void PathFinding::FloodMap(vector<Tile*> &avaliableTiles, Tile * start, int maxM
 						//we have a valid tile we can move to, so work out the deeper pathway code to carry on the path finding
 						//I am setting the final destination parameter to be the same tile we are going to. That way, the estimated cost (which is ignored for dijkstra....
 						///..'s algorithm does not use
-						if (PathFinding::WorkoutPathwayDataToTargetTile(level, level->TileGrid[y][x], currentSquare, openTiles, x, y)) {
+						if (PathFinding::workoutPathwayDataToTargetTile(level, level->TileGrid[y][x], currentSquare, openTiles, x, y)) {
 
 							//the looped tile was a sucess. Check to see if it meets cost requirements, and if not then remove it
 							Tile * sucessTile = level->TileGrid[y][x];
@@ -57,7 +57,7 @@ void PathFinding::FloodMap(vector<Tile*> &avaliableTiles, Tile * start, int maxM
 							if (sucessTile->FCost > maxCost) {
 
 								openTiles.erase(openTiles.end() - 1);
-								sucessTile->AssignCosts(0, 0);
+								sucessTile->assignCosts(0, 0);
 								sucessTile->HasPathfindingParent = false;
 							}
 							else
@@ -70,7 +70,7 @@ void PathFinding::FloodMap(vector<Tile*> &avaliableTiles, Tile * start, int maxM
 		}
 	}
 
-	ResetUsedTiles(closedTiles, openTiles);
+	resetUsedTiles(closedTiles, openTiles);
 }
 
 //RETURNS false if no path can be found
@@ -78,7 +78,7 @@ void PathFinding::FloodMap(vector<Tile*> &avaliableTiles, Tile * start, int maxM
 //The vector that will be populated with the route tiles
 //the tile the path should start from
 //the tile the path sohuld end at
-bool PathFinding::GetPathway(vector<Tile*> &pathway, Tile * start, Tile * destination) {
+bool PathFinding::getPathway(vector<Tile*> &pathway, Tile * start, Tile * destination) {
 
 	pathway.clear();
 	Level * level = start->ParentLevel;
@@ -97,7 +97,7 @@ bool PathFinding::GetPathway(vector<Tile*> &pathway, Tile * start, Tile * destin
 	//work out the initial costs for this source tile
 	int xCost = abs(destination->X - start->X);
 	int yCost = abs(destination->Y - start->Y);
-	start->AssignCosts(start->GCost, (xCost + yCost) * 10);
+	start->assignCosts(start->GCost, (xCost + yCost) * 10);
 
 	//add it to list of pathway tiles
 	openTiles.push_back(start);
@@ -120,11 +120,7 @@ bool PathFinding::GetPathway(vector<Tile*> &pathway, Tile * start, Tile * destin
 		//if we have found our destination
 		if (currentSquare == destination) {
 
-			PathFinding::FoundDestination(currentSquare, pathway, closedTiles, openTiles);
-
-			//for (int i = 0; i < (int) closedTiles.size(); i++) {
-			//	closedTiles[i]->TileSprite->DisplayColour.g = 0.4f;
-			//}
+			PathFinding::foundDestination(currentSquare, pathway, closedTiles, openTiles);
 
 			return true;
 		}
@@ -144,7 +140,7 @@ bool PathFinding::GetPathway(vector<Tile*> &pathway, Tile * start, Tile * destin
 					//only proceed with this tile if it is walkable on and if we haven't visited it before (ie it won't be in the closed list)
 					if (level->TileGrid[y][x]->CoverType == kOpen && std::find(closedTiles.begin(), closedTiles.end(), level->TileGrid[y][x]) == closedTiles.end())
 						//we have a valid tile we can move to, so work out the deeper pathway code to carry on the path finding
-						PathFinding::WorkoutPathwayDataToTargetTile(level, destination, currentSquare, openTiles, x, y);
+						PathFinding::workoutPathwayDataToTargetTile(level, destination, currentSquare, openTiles, x, y);
 				}
 			}
 		}
@@ -158,16 +154,16 @@ bool PathFinding::GetPathway(vector<Tile*> &pathway, Tile * start, Tile * destin
 //The vector that will be populated with the route tiles
 //the tile the path should start from
 //the tile the path sohuld end at
-bool PathFinding::GetTacticalPathway(vector<InfulenceData> levelInfulence, vector<Tile*> &pathway, Tile * start, Tile * destination) {
+bool PathFinding::getTacticalPathway(vector<InfulenceData> levelInfulence, vector<Tile*> &pathway, Tile * start, Tile * destination) {
 
 	//loop through all of the infulence data and modify the tiles gcost by them
 	for (int i = 0; i < (int)levelInfulence.size(); i++)
 		levelInfulence[i].TheTile->Weighting = levelInfulence[i].Infulence;
 
-	bool result = PathFinding::GetPathway(pathway, start, destination);
+	bool result = PathFinding::getPathway(pathway, start, destination);
 
 	//reset all of the tiles we have infulenced as they may not have been in the open or closed lists
-	PathFinding::ResetInfulencedTiles(levelInfulence);
+	PathFinding::resetInfulencedTiles(levelInfulence);
 
 	return result;
 }
@@ -180,20 +176,20 @@ bool PathFinding::GetTacticalPathway(vector<InfulenceData> levelInfulence, vecto
 //The x co-ordinate of the tile we are checking to move to
 //The y co-ordinate of the tile we are checking to move to
 //RETURNS true if the element was sucessful and added to the open tiles list
-bool PathFinding::WorkoutPathwayDataToTargetTile(Level * level, Tile * finalDestination, Tile * currentSquare, vector<Tile*> &openTiles, int x, int y) {
+bool PathFinding::workoutPathwayDataToTargetTile(Level * level, Tile * finalDestination, Tile * currentSquare, vector<Tile*> &openTiles, int x, int y) {
 
 	Tile * loopedNeighbour = level->TileGrid[y][x];
 
 	//only work out the pathday data if we weren't cutting the corner of a wall
-	if (PathFinding::CheckIfCutCorner(currentSquare, loopedNeighbour, level) == true)
+	if (PathFinding::checkIfCutCorner(currentSquare, loopedNeighbour, level) == true)
 		return false;
 
 	//check to see if its not on the open list already
 	if (std::find(openTiles.begin(), openTiles.end(), loopedNeighbour) == openTiles.end()) {
 
 		//set that parent tile to be that of the tile we're coming from
-		loopedNeighbour->SetPathfindingParent(currentSquare);
-		PathFinding::SetCostData(loopedNeighbour, finalDestination);
+		loopedNeighbour->setPathfindingParent(currentSquare);
+		PathFinding::setCostData(loopedNeighbour, finalDestination);
 
 		//add it to the open list
 		openTiles.push_back(loopedNeighbour);
@@ -207,8 +203,8 @@ bool PathFinding::WorkoutPathwayDataToTargetTile(Level * level, Tile * finalDest
 		//if the previously calculated gcost is greater than what the gcost would be if moved to from currentSquare, then change the parent
 		if (level->TileGrid[y][x]->GCost > currentSquare->GCost) {
 
-			level->TileGrid[y][x]->SetPathfindingParent(currentSquare);
-			PathFinding::SetCostData(level->TileGrid[y][x], finalDestination);
+			level->TileGrid[y][x]->setPathfindingParent(currentSquare);
+			PathFinding::setCostData(level->TileGrid[y][x], finalDestination);
 		}
 	}
 	
@@ -219,7 +215,7 @@ bool PathFinding::WorkoutPathwayDataToTargetTile(Level * level, Tile * finalDest
 //Sets the cost data for a tile according to if it was a diagonal move or not with;
 //The tile that we want to calculate the cost for
 //The destination tile for the path
-void PathFinding::SetCostData(Tile * theTile, Tile * finalDestination) {
+void PathFinding::setCostData(Tile * theTile, Tile * finalDestination) {
 
 	int xCost = abs(finalDestination->X - theTile->X);
 	int yCost = abs(finalDestination->Y - theTile->Y);
@@ -248,7 +244,7 @@ void PathFinding::SetCostData(Tile * theTile, Tile * finalDestination) {
 	Gcost += theTile->Exposure;
 
 	//work out if this tile is a diagonal of the parent
-	if (PathFinding::CheckIfDiagonalMove(theTile, theTile->PathfindingParent) == true)
+	if (PathFinding::checkIfDiagonalMove(theTile, theTile->PathfindingParent) == true)
 		//it is so add on the diagonal distance
 		Gcost += 14;
 	else
@@ -256,15 +252,15 @@ void PathFinding::SetCostData(Tile * theTile, Tile * finalDestination) {
 		Gcost += 10;
 
 	//calculate the Fcosts etc for the tile
-	theTile->AssignCosts(Gcost, Hcost);
+	theTile->assignCosts(Gcost, Hcost);
 }
 
 //Checks to see if by moving from the source to the destination in the map 'level' will be
 //cutting across a tile that is impassable
-bool PathFinding::CheckIfCutCorner(Tile * source, Tile * destination, Level * level) {
+bool PathFinding::checkIfCutCorner(Tile * source, Tile * destination, Level * level) {
 
 	//the only way we could cut a corner is if its a diagonal move
-	if (PathFinding::CheckIfDiagonalMove(source, destination) == true) {
+	if (PathFinding::checkIfDiagonalMove(source, destination) == true) {
 
 		//work out which tile (source or destination) is on the left and which is on the right
 		Tile * leftMostTile = (source->X < destination->X ? source : destination);
@@ -313,7 +309,7 @@ bool PathFinding::CheckIfCutCorner(Tile * source, Tile * destination, Level * le
 }
 
 //Checks to see if a move from the source tile to the destination tile is diagonal
-bool PathFinding::CheckIfDiagonalMove(Tile * source, Tile * destination) {
+bool PathFinding::checkIfDiagonalMove(Tile * source, Tile * destination) {
 
 	//Iterate through the corner tiles of the source tile
 	for (int x = source->X - 1; x < source->X + 2; x += 2) {
@@ -335,7 +331,7 @@ bool PathFinding::CheckIfDiagonalMove(Tile * source, Tile * destination) {
 //reference to the pathway vector which will return all the positions we must move though
 //reference to all the closed tiles we collected
 //reference to all the open tiles wer clolected
-void PathFinding::FoundDestination(Tile * finalDestination, vector<Tile*> &pathway, vector<Tile*> &closedTiles, vector<Tile*> openTiles) {
+void PathFinding::foundDestination(Tile * finalDestination, vector<Tile*> &pathway, vector<Tile*> &closedTiles, vector<Tile*> openTiles) {
 
 	pathway.push_back(finalDestination);
 
@@ -363,29 +359,29 @@ void PathFinding::FoundDestination(Tile * finalDestination, vector<Tile*> &pathw
 	//remove the first note from the pathway since this is where the player started at
 	pathway.erase(pathway.begin());
 
-	ResetUsedTiles(closedTiles, openTiles);
+	resetUsedTiles(closedTiles, openTiles);
 }
 
 //Resets all the tiles used in the level
-void PathFinding::ResetUsedTiles(vector<Tile*> &closedTiles, vector<Tile*> openTiles) {
+void PathFinding::resetUsedTiles(vector<Tile*> &closedTiles, vector<Tile*> openTiles) {
 
 	//reset all of the parent tiles so next time the algorthim runs, it is done fresh
 	for (int i = 0; i < (int)closedTiles.size(); i++) {
 
-		closedTiles[i]->ResetTile();
+		closedTiles[i]->resetTile();
 	}
 
 	for (int i = 0; i < (int)openTiles.size(); i++) {
 
-		openTiles[i]->ResetTile();
+		openTiles[i]->resetTile();
 	}
 }
 
 //resets all of the tiles affected by the infulence data
-void PathFinding::ResetInfulencedTiles(vector<InfulenceData> levelInfulence) {
+void PathFinding::resetInfulencedTiles(vector<InfulenceData> levelInfulence) {
 
 	for (int i = 0; i < (int)levelInfulence.size(); i++) {
 		
-		levelInfulence[i].TheTile->ResetTile();
+		levelInfulence[i].TheTile->resetTile();
 	}
 }

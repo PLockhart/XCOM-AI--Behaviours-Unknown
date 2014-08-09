@@ -20,21 +20,21 @@ public:
 	//===================================================
 public:
 	BoundingOverwatch::BoundingOverwatch(AICharacter * char1, AICharacter * char2, int priority);
-	void Act(float dt, AICharacter * sender);
-	void Cancel();
-	void Deleted();
-	void HardCancel();
-	bool IsSameKind(Action * other);
-	bool ShouldGiveWayTo(Action *other);
+	void act(float dt, AICharacter * sender);
+	void cancel();
+	void deleted();
+	void hardCancel();
+	bool isSameKind(Action * other);
+	bool shouldGiveWayTo(Action *other);
 
-	std::string ToString();
+	std::string toString();
 
 protected:
-	void Finished();
+	void finished();
 
-	vector<Tile*> GetBestLOSCandidatesFor(AICharacter * character);
+	vector<Tile*> getBestLOSCandidatesFor(AICharacter * character);
 
-	void MoverFinished();
+	void moverFinished();
 };
 
 #endif

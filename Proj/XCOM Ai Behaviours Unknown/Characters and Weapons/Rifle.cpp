@@ -17,7 +17,7 @@ Rifle::Rifle()
 }
 
 //Override of base weapon. Must have ammunition and not be reloading
-bool Rifle::CanSuppress() {
+bool Rifle::canSuppress() {
 
 	if (_shotsInClip >= 1 && IsReloading == false)
 		return true;
@@ -25,12 +25,12 @@ bool Rifle::CanSuppress() {
 	return false;
 }
 
-void Rifle::ModifyPlayerStats(AICharacter * character) {
+void Rifle::modifyPlayerStats(AICharacter * character) {
 
 	//a rifle doesn't add any traits to the character
 }
 
-std::string Rifle::ToString() {
+std::string Rifle::toString() {
 
 	return "Rifle";
 }

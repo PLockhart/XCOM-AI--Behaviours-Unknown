@@ -12,7 +12,7 @@ DisregardsSafety::DisregardsSafety(DecisionTree * tree, float threatConstant)
 	_threatConstant = threatConstant;
 }
 
-Action* DisregardsSafety::Run() {
+Action* DisregardsSafety::run() {
 
 	//the accumulated threat from all the enemies
 	float accThreat = 0;
@@ -23,7 +23,7 @@ Action* DisregardsSafety::Run() {
 		AICharacter * loopedEnemy = Tree->Character->VisibleEnemies[i];
 
 		//accumulate its threat to the tree's character
-		accThreat = loopedEnemy->Weapon->GetAccuracyToCharIncCover(Tree->Character) * loopedEnemy->Weapon->BulletsPerShot;
+		accThreat = loopedEnemy->Weapon->getAccuracyToCharIncCover(Tree->Character) * loopedEnemy->Weapon->BulletsPerShot;
 	}
 
 	float statAverage = (Tree->Character->Boldness + (float)Tree->Character->Aggression) / 2;
@@ -32,13 +32,13 @@ Action* DisregardsSafety::Run() {
 	//if greater than the character and constant, then character feels in danger
 	if (statAverage * _threatConstant > accThreat / (int)Tree->Character->VisibleEnemies.size()) {
 
-		Tree->Log("Throwing caution to the wind");
-		return TrueBranch->Run();
+		Tree->log("Throwing caution to the wind");
+		return TrueBranch->run();
 	}
 
 	else {
 
-		Tree->Log("Not willing to take risks");
-		return FalseBranch->Run();
+		Tree->log("Not willing to take risks");
+		return FalseBranch->run();
 	}
 }

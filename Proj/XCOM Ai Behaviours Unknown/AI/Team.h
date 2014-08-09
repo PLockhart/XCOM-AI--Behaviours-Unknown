@@ -43,28 +43,28 @@ private:
 public:
 	//creations
 	Team::Team(int identifier);
-	vector<AICharacter*> GetTeammatesOf(AICharacter * character);
-	void RegisterTeams(vector<Team*> teams);
-	void AddTeamMember(AICharacter * member);
+	vector<AICharacter*> getTeammatesOf(AICharacter * character);
+	void registerTeams(vector<Team*> teams);
+	void addTeamMember(AICharacter * member);
 
 	//updating
-	void Update(float dt);
-	void RemoveMember(AICharacter * member);
+	void update(float dt);
+	void removeMember(AICharacter * member);
 
 	//gets
-	vector<InfulenceData> GetInfulencedTiles();
-	vector<InfulenceData> GetAssumedEnemyInfulencedTiles();
-	vector<TileHistory> GetTeamTileHistory();
-	vector<AICharacter*> GetVisibleEnemies();
-	vector<AICharacter*> GetTrackedEnemies();
-	vector<Tile*> GetTeamsVisibleTiles();
+	vector<InfulenceData> getInfulencedTiles();
+	vector<InfulenceData> getAssumedEnemyInfulencedTiles();
+	vector<TileHistory> getTeamTileHistory();
+	vector<AICharacter*> getVisibleEnemies();
+	vector<AICharacter*> getTrackedEnemies();
+	vector<Tile*> getTeamsVisibleTiles();
 
-	void Draw();
+	void draw();
 
 private:
 	//updating
-	void SetVisibleEnemies();
-	void UpdateEnemyPositionHistory(float dt);
-	void UpdateTrackedEnemies();
+	void setVisibleEnemies();
+	void updateEnemyPositionHistory(float dt);
+	void updateTrackedEnemies();
 };
 #endif

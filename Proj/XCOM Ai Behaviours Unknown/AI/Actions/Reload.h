@@ -14,19 +14,19 @@ private:
 	//===================================================
 public:
 	Reload::Reload(AICharacter * actor, int priority);
-	void Act(float dt, AICharacter * sender);
+	void act(float dt, AICharacter * sender);
 	
-	bool CanInterrupt();
-	bool CanDoBoth(Action * other);
-	void Cancel();
+	bool canInterrupt();
+	bool canDoBoth(Action * other);
+	void cancel();
 
-	bool IsSameKind(Action * other);
-	bool ShouldGiveWayTo(Action *other);
+	bool isSameKind(Action * other);
+	bool shouldGiveWayTo(Action *other);
 
-	std::string ToString();
+	std::string toString();
 
 protected:
-	void Setup();
+	void setup();
 };
 
 #endif

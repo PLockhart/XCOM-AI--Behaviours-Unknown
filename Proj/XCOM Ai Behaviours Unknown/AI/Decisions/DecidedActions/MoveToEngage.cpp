@@ -11,6 +11,13 @@
 #include <iostream>
 #include <sstream>
 
+//increasing this value will mean the character will consider tiles further away
+const float MOVE_TO_ENGAGE_MOVEMENT_CONST = 10;
+//Increasing this will make the character move to more aggressive positions
+const float MOVE_TO_ENGAGE_AGGRESSION_CONST = 2;
+//Increasing this will make the character move aggressive against suppressed enemies
+const float MOVE_TO_ENGAGE_SUPPRESSED_CONST = 9.5f;
+
 //moves to engage the closest enemy we know of
 MoveToEngage::MoveToEngage(DecisionTree * tree)
 	: DecisionAction(tree) {
@@ -18,20 +25,11 @@ MoveToEngage::MoveToEngage(DecisionTree * tree)
 }
 
 //Move the character to a position to engage enemies
-Action* MoveToEngage::Run() {
+Action* MoveToEngage::run() {
 
 	//pick the closest enemy
 	vector<EnemyPositionHistory> enemyHistory = Tree->CharTeam->EnemyPositionHist;
 	EnemyPositionHistory nearestEnemyRecord = enemyHistory[0];
-
-	/* //alternat debug statement
-	std::stringstream output;
-	output << "Moving to engage ";
-	output << nearestEnemyRecord.TheTile->X;
-	output << ", ";
-	output << nearestEnemyRecord.TheTile->Y;
-	Tree->Log(output.str());
-	*/
 
 	//check the other enemies and see if there is a closer enemy
 	for (int i = 1; i < (int)enemyHistory.size(); i++) {
@@ -45,23 +43,23 @@ Action* MoveToEngage::Run() {
 
 	//find all the positions we can engage the target from
 	//tiles will be sorted by weighting, where lowest is best
-	vector<Tile*> possiblePoints = nearestEnemyRecord.TheTile->GetLosTiles();
+	vector<Tile*> possiblePoints = nearestEnemyRecord.TheTile->getLosTiles();
 
 	//weight according to weapon accuracy from this position
 	for (int i = 0; i < (int)possiblePoints.size(); i++) {
 
-		float accuracyOverDist = Tree->Character->Weapon->GetAccuracyFromPlaceToTarget(possiblePoints[i]->Position, nearestEnemyRecord.TheTile->Position);
+		float accuracyOverDist = Tree->Character->Weapon->getAccuracyFromPlaceToTarget(possiblePoints[i]->Position, nearestEnemyRecord.TheTile->Position);
 
 		//reduce accuracy if in cover from the possible tile position
-		if (nearestEnemyRecord.TheTile->IsInCoverFrom(possiblePoints[i]->Position) == true)
+		if (nearestEnemyRecord.TheTile->isInCoverFrom(possiblePoints[i]->Position) == true)
 			accuracyOverDist /= Tree->Character->Weapon->CoverPenalty;
 
 		//remove tiles as possible movement positions if they AREN'T
 		if (
 			//within the characters acceptable range. Only have this expectation if the character isn't suppressed
-			(accuracyOverDist <= Tree->Character->Aggression * 2 && Tree->Character->IsSuppressed == false) || 
+			(accuracyOverDist <= Tree->Character->Aggression * MOVE_TO_ENGAGE_AGGRESSION_CONST && Tree->Character->IsSuppressed == false) ||
 			//if the enemy is surpressed, and we can't take full advantage of it if we aren't surpressed ourselves
-			(accuracyOverDist <= Tree->Character->Aggression * 9.5 && nearestEnemyRecord.TheEnemy->IsSuppressed == true && Tree->Character->IsSuppressed == false) || 
+			(accuracyOverDist <= Tree->Character->Aggression * MOVE_TO_ENGAGE_SUPPRESSED_CONST && nearestEnemyRecord.TheEnemy->IsSuppressed == true && Tree->Character->IsSuppressed == false) ||
 			//or can be shot from at all, regardless on whether the character is surpressed or not
 			accuracyOverDist <= 0 ||
 			//moveable to
@@ -84,22 +82,22 @@ Action* MoveToEngage::Run() {
 
 			float infulence = accuracyOverDist * Tree->Character->Weapon->BulletsPerShot;
 
-			//decrease weighting of tile by our damage, modified by our aggression //divide by constant
-			possiblePoints[i]->Weighting -= infulence / (10 - Tree->Character->Aggression) / 1;
+			//decrease weighting of tile by our damage, modified by our aggression
+			possiblePoints[i]->Weighting -= infulence / (10 - Tree->Character->Aggression);
 
 			//now increase weighting by how far we guess we have to move
 			int xCost = abs(Tree->Character->CurrentTile->X - possiblePoints[i]->X);
 			int yCost = abs(Tree->Character->CurrentTile->Y - possiblePoints[i]->Y);
 
 			//guess the distance to the end tile
-			float guessConstant = (10 - Tree->Character->Aggression) / 10;	//the higher the constant the further a character will be likely to move
+			float guessConstant = (10 - Tree->Character->Aggression) / MOVE_TO_ENGAGE_MOVEMENT_CONST;	//the higher the constant the further a character will be likely to move
 			int Hcost = (xCost + yCost) * 10 * guessConstant;
 			possiblePoints[i]->Weighting += Hcost;
 		}
 	}
 
 	//weight the tiles against the exposure that enemies would have when firing at us from this position
-	vector<InfulenceData> enemyInfulence = Tree->CharTeam->GetAssumedEnemyInfulencedTiles();
+	vector<InfulenceData> enemyInfulence = Tree->CharTeam->getAssumedEnemyInfulencedTiles();
 
 	//increase the infulence of any possible points that overlap with enemy infulence
 	for (int i = 0; i < (int)enemyInfulence.size(); i++) {
@@ -139,7 +137,7 @@ Action* MoveToEngage::Run() {
 	output << bestTile->X;
 	output << ", ";
 	output << bestTile->Y;
-	Tree->Log(output.str());
+	Tree->log(output.str());
 	
 
 	//tactically move to that location

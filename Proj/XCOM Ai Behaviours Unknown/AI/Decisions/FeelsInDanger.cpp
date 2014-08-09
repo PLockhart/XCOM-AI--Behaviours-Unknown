@@ -12,7 +12,7 @@ FeelsInDanger::FeelsInDanger(DecisionTree * tree, float damageConstant)
 	_damageConstant = damageConstant;
 }
 
-Action* FeelsInDanger::Run() {
+Action* FeelsInDanger::run() {
 
 	//the accumulated threat from all the enemies
 	float accThreat = 0;
@@ -26,8 +26,8 @@ Action* FeelsInDanger::Run() {
 		AICharacter * loopedEnemy = Tree->Character->VisibleEnemies[i];
 
 		//accumulate its threat to the tree's character and our threat to them
-		accThreat = loopedEnemy->Weapon->GetAccuracyToCharIncCover(Tree->Character) * loopedEnemy->Weapon->BulletsPerShot;
-		ourAverageThreatToEnemies = Tree->Character->Weapon->GetAccuracyToCharIncCover(loopedEnemy) * Tree->Character->Weapon->BulletsPerShot;
+		accThreat = loopedEnemy->Weapon->getAccuracyToCharIncCover(Tree->Character) * loopedEnemy->Weapon->BulletsPerShot;
+		ourAverageThreatToEnemies = Tree->Character->Weapon->getAccuracyToCharIncCover(loopedEnemy) * Tree->Character->Weapon->BulletsPerShot;
 	}
 
 	float statAverage = (Tree->Character->Boldness + (float)Tree->Character->Aggression) / 2;
@@ -37,20 +37,20 @@ Action* FeelsInDanger::Run() {
 	float averageEnemyThreat = accThreat / (int)Tree->Character->VisibleEnemies.size();
 
 	//reduce the enemy threat if they are a lone enemy and we have teammates left
-	if (Tree->CharTeam->GetTrackedEnemies().size() == 1 && Tree->CharTeam->GetTeammatesOf(Tree->Character).size() > 0)
+	if (Tree->CharTeam->getTrackedEnemies().size() == 1 && Tree->CharTeam->getTeammatesOf(Tree->Character).size() > 0)
 		averageEnemyThreat /= 100;
 
 	//take the average threat comparing it to the average boldness/aggression * constant
 	//if greater than the character and constant, then character feels in danger
 	if (statAverage * _damageConstant < averageEnemyThreat - ourAverageThreatToEnemies) {
 
-		Tree->Log("Feels scared");
-		return TrueBranch->Run();
+		Tree->log("Feels scared");
+		return TrueBranch->run();
 	}
 
 	else {
 
-		Tree->Log("Holding nerve");
-		return FalseBranch->Run();
+		Tree->log("Holding nerve");
+		return FalseBranch->run();
 	}
 }

@@ -10,44 +10,44 @@ Reload::Reload(AICharacter * actor, int priority)
 	ActingCharacter = actor;
 }
 
-void Reload::Setup() {
+void Reload::setup() {
 
 	_isSetupFin = true;
 }
 
-void Reload::Act(float dt, AICharacter * sender) {
+void Reload::act(float dt, AICharacter * sender) {
 	
-	Action::Act(dt, sender);
+	Action::act(dt, sender);
 
 	//reload the weapon if we haven't started doing it yet
 	if  (_hasStarted == false) {
 
 		_hasStarted = true;
-		ActingCharacter->Weapon->Reload();
+		ActingCharacter->Weapon->reload();
 	}
 
 	//check for the reloading to be finished
 	if (ActingCharacter->Weapon->IsReloading == false)
-		Finished();
+		finished();
 }
 
 //reloading actions cannot be cancelled
-bool Reload::CanInterrupt() {
+bool Reload::canInterrupt() {
 
 	return false;
 }
 
-void Reload::Cancel() {
+void Reload::cancel() {
 
 	//cannot be cancelled
 }
 
-bool Reload::CanDoBoth(Action * other) {
+bool Reload::canDoBoth(Action * other) {
 
 	return false;
 }
 
-bool Reload::IsSameKind(Action * other) {
+bool Reload::isSameKind(Action * other) {
 
 	if (Reload * derived = dynamic_cast<Reload*>(other))
 		return true;
@@ -55,10 +55,10 @@ bool Reload::IsSameKind(Action * other) {
 	return false;
 }
 
-bool Reload::ShouldGiveWayTo(Action * other) {
+bool Reload::shouldGiveWayTo(Action * other) {
 
 	//if they are of the same type..
-	if (IsSameKind(other) == true) {
+	if (isSameKind(other) == true) {
 
 		return false;
 	}
@@ -70,7 +70,7 @@ bool Reload::ShouldGiveWayTo(Action * other) {
 	return false;
 }
 
-std::string Reload::ToString() {
+std::string Reload::toString() {
 
 	return "Reloading";
 }

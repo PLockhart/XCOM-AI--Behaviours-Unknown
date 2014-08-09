@@ -10,16 +10,16 @@ HasCooperativeTeammates::HasCooperativeTeammates(DecisionTree * tree, float minC
 	_minComradery = minComradery;
 }
 
-Action* HasCooperativeTeammates::Run() {
+Action* HasCooperativeTeammates::run() {
 
-	vector<AICharacter*> teammates = Tree->CharTeam->GetTeammatesOf(Tree->Character);
+	vector<AICharacter*> teammates = Tree->CharTeam->getTeammatesOf(Tree->Character);
 
 	//loop through all the allies and if we have at least 1 cooperative one, return true
 	for (int i = 0; i < (int)teammates.size(); i++) {
 
 		if (teammates[i]->Comradery >= _minComradery)
-			return TrueBranch->Run();
+			return TrueBranch->run();
 	}
 
-	return FalseBranch->Run();
+	return FalseBranch->run();
 }

@@ -41,21 +41,21 @@ protected:
 	//===================================================
 public:
 	BaseWeapon::BaseWeapon();
-	void ShootAt(AICharacter * target);
-	void SuppressTarget(AICharacter * target);
-	bool CanShoot();
-	bool IsInRange(Vector3 position);
-	void Reload();
-	float GetAccuracyToTarget(Vector3 targetPos);
-	float GetAccuracyFromPlaceToTarget(Vector3 startPos, Vector3 targetPos);
-	float GetAccuracyToCharIncCover(AICharacter * target);
-	float GetAmmoRatio();
-	void Update(float dt);
-	void Draw();
+	void shootAt(AICharacter * target);
+	void suppressTarget(AICharacter * target);
+	bool canShoot();
+	bool isInRange(Vector3 position);
+	void reload();
+	float getAccuracyToTarget(Vector3 targetPos);
+	float getAccuracyFromPlaceToTarget(Vector3 startPos, Vector3 targetPos);
+	float getAccuracyToCharIncCover(AICharacter * target);
+	float getAmmoRatio();
+	void update(float dt);
+	void draw();
 
-	virtual std::string ToString() = 0;
-	virtual bool CanSuppress() = 0;
-	virtual void ModifyPlayerStats(AICharacter * character) = 0;
+	virtual std::string toString() = 0;
+	virtual bool canSuppress() = 0;
+	virtual void modifyPlayerStats(AICharacter * character) = 0;
 };
 
 #endif

@@ -9,14 +9,14 @@ class TacticalMove : public MoveAction {
 	//===================================================
 public:
 	TacticalMove::TacticalMove(AICharacter * character, Tile * destination, int priority);
-	bool IsSameKind(Action * other);
-	bool ShouldGiveWayTo(Action *other);
+	bool isSameKind(Action * other);
+	bool shouldGiveWayTo(Action *other);
 
-	std::string ToString();
+	std::string toString();
 
 protected:
-	bool GetPathwayData(vector<Tile*> &pathway, Tile * start, Tile * destination);
-	Tile* GetIdealFallback();
+	bool getPathwayData(vector<Tile*> &pathway, Tile * start, Tile * destination);
+	Tile* getIdealFallback();
 };
 
 #endif

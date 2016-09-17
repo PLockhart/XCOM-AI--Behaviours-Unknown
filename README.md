@@ -1,9 +1,9 @@
 XCOM-AI--Behaviours-Unknown
 ===========================
 
-The squad based AI project I made in my 3rd year of University.
+The squad based AI project I made in my 3rd year of University (2013).
 
-It is written in C++ and made with OpenGL and Glut.
+It is written in C++98 and made with OpenGL and Glut.
 
 Teams of any size will fight each other and try to work together according to their characteristics.
 
